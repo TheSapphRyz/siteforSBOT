@@ -1,18 +1,12 @@
-.btn {
-    padding: 0.5em 1.5em;
-    color: white;
-    font-family: monospace;
-    font-size: 1.4em;
-    font-weight: bold;
-    text-transform: uppercase;
-    background-image: linear-gradient(to right, purple, blue);
-    border: none;
-    cursor: pointer;
+/* static/styles.css */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
 }
