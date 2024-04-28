@@ -2,13 +2,55 @@
 <html>
 <head>
     <title>Веб-приложение</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .btn {
+            padding: 0.5em 1.5em;
+            color: white;
+            font-family: monospace;
+            font-size: 1.4em;
+            font-weight: bold;
+            text-transform: uppercase;
+            background-image: linear-gradient(to right, purple, blue);
+            border: none;
+            cursor: pointer;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <button class="btn" onclick="sendData()">Нажми меня</button>
     </div>
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        // Функция для отправки данных на сервер
+        function sendData() {
+            // Получаем chat_id из параметров URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const chatId = urlParams.get('chat_id');
+
+            // Отправляем POST-запрос на /web_app с chat_id
+            fetch('/web_app', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ chat_id: chatId })
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Ответ от сервера:', data);
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        }
+    </script>
 </body>
 </html>
