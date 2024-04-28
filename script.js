@@ -1,22 +1,19 @@
-// Функция для отправки данных на сервер
-function sendData() {
-    // Получаем chat_id из параметров URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const chatId = urlParams.get('chat_id');
+// static/script.js
+document.getElementById('button-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
 
-    // Отправляем POST-запрос на /web_app с chat_id
-    fetch('/web_app', {
+    var formData = new FormData(event.target);
+
+    fetch(event.target.action, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ chat_id: chatId })
+        body: formData
     })
     .then(response => response.text())
     .then(data => {
-        console.log('Ответ от сервера:', data);
+        var responseContainer = document.getElementById('response-container');
+        responseContainer.textContent = data;
     })
     .catch(error => {
-        console.error('Ошибка:', error);
+        console.error('Error:', error);
     });
-}
+});
