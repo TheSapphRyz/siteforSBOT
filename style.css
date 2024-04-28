@@ -1,0 +1,18 @@
+.btn {
+    padding: 0.5em 1.5em;
+    color: white;
+    font-family: monospace;
+    font-size: 1.4em;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-image: linear-gradient(to right, purple, blue);
+    border: none;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
