@@ -9,7 +9,7 @@ body {
 
 /* Стили для шапки */
 header {
-  background-color: #37AFE2;
+  background-color: #37AFE2 !important;
   padding: 20px;
   text-align: center;
 }
@@ -45,7 +45,7 @@ li {
 
 /* Стили для футера */
 footer {
-  background-color: #23272A;
+  background-color: #23272A !important;
   padding: 40px;
   text-align: center;
 }
