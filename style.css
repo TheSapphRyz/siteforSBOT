@@ -1,6 +1,6 @@
 /* Общие стили */
 body {
-  font-family: 'gg sans', sans-serif;
+  font-family: 'gg sans', 'Times', sans-serif;
   margin: 0;
   padding: 0;
   background-color: #2C2CF33;
@@ -21,7 +21,7 @@ header h1 {
 /* Стили для основного контента */
 main {
   padding: 40px;
-  background-color: #2C2C2C;
+  background-color: #2C2C2C !important;
 }
 
 .rules, .punishments {
