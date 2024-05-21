@@ -21,6 +21,7 @@ header h1 {
 /* Стили для основного контента */
 main {
   padding: 40px;
+  background-color: #2C2C2C;
 }
 
 .rules, .punishments {
