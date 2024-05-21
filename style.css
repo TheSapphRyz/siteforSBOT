@@ -21,7 +21,7 @@ header h1 {
 /* Стили для основного контента */
 main {
   padding: 40px;
-  background-color: #2C2C2C !important;
+  background-color: #2C2CF33 !important;
 }
 
 .rules, .punishments {
@@ -45,7 +45,7 @@ li {
 
 /* Стили для футера */
 footer {
-  background-color: #2c2f33;
+  background-color: #23272A;
   padding: 40px;
   text-align: center;
 }
