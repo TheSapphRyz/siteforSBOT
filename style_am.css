@@ -1,0 +1,58 @@
+/* Общие стили */
+body {
+  font-family: 'gg sans', 'SF Pro Display', 'Roboto', 'Times', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #2C2CF33;
+  color: #ffffff;
+}
+
+/* Стили для шапки */
+header {
+  background-color: #37AFE2;
+  padding: 20px;
+  text-align: center;
+  font-family: 'Roboto';
+}
+
+header h1 {
+  margin: 0;
+}
+
+/* Стили для основного контента */
+main {
+  padding: 40px;
+  background-color: #2C2C2C !important;
+}
+
+.rules, .punishments {
+  margin-bottom: 40px;
+}
+
+h2 {
+  color: #7289da;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  color: #;
+  font-family: 'gg sans'
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+/* Стили для футера */
+footer {
+  background-color: #23272A;
+  padding: 40px;
+  text-align: center;
+}
+
+.contacts {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
