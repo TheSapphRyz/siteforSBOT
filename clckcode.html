@@ -1,15 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Мое Telegram WebApp</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Кликер</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        #click-button {
+            font-size: 24px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #clicks-counter {
+            font-size: 36px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Добро пожаловать в мое Telegram WebApp!</h1>
-  <p>Нажмите на кнопку, чтобы увеличить счетчик кликов:</p>
-  <button id="click-button">Кликни меня!</button>
+    <h1>Кликер</h1>
+    <button id="click-button">Кликни меня!</button>
+    <div id="clicks-counter">0</div>
 
-  <script>
+    <script>
     document.addEventListener('DOMContentLoaded', function() {
       const webApp = new Telegram.WebApp();
       webApp.expand();
