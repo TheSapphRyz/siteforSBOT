@@ -5,17 +5,20 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
-    <h1>Счетчик кликов: <span id="click-count">{{ click_count }}</span></h1>
+    <h1>Счетчик кликов: <span id="click-count">0</span></h1>
     <button id="click-button">Нажми меня!</button>
 
     <script>
       $(document).ready(function() {
+        let clickCount = 0;
+
         $('#click-button').click(function() {
           $.ajax({
             url: '/click',
             type: 'POST',
             success: function(data) {
-              $('#click-count').text(data);
+              clickCount = parseInt(data);
+              $('#click-count').text(clickCount);
             }
           });
         });
