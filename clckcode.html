@@ -39,9 +39,10 @@
         document.getElementById("click-button").addEventListener("click", function() {
             clicks++;
             document.getElementById("clicks-counter").textContent = clicks;
-            window.Telegram.WebApp.MainButton.onClick = function() {
-                window.Telegram.WebApp.close(clicks.toString());
-            };
+
+            // Отправляем данные о количестве кликов в бота
+            window.Telegram.WebApp.sendData(JSON.stringify({ clicks: clicks }));
+            window.Telegram.WebApp.close();
         });
     </script>
 </body>
