@@ -41,8 +41,13 @@
             document.getElementById("clicks-counter").textContent = clicks;
 
             // Отправляем данные о количестве кликов в бота
-            window.Telegram.WebApp.sendData(JSON.stringify({ clicks: clicks }));
-            window.Telegram.WebApp.close();
+            try {
+                window.Telegram.WebApp.sendData(JSON.stringify({ clicks: clicks }));
+                console.log(`Отправлено ${clicks} кликов в бота`);
+                window.Telegram.WebApp.close();
+            } catch (e) {
+                console.error("Ошибка при отправке данных в бота:", e);
+            }
         });
     </script>
 </body>
