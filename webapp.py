@@ -25,7 +25,7 @@ def click():
     print(request.form)
     global click_count
     click_count += 1
-    bot.send_message(chat_id='YOUR_TELEGRAM_USER_ID', text=f"Кликнули {click_count} раз(а)!")
+    bot.send_message(chat_id='5394056862', text=f"Кликнули {click_count} раз(а)!")
     return str(click_count)
 
 
