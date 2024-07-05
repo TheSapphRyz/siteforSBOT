@@ -1,58 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Кликер</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f0f0;
-            padding: 20px;
-        }
-
-        #click-button {
-            font-size: 24px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        #clicks-counter {
-            font-size: 36px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-    </style>
+  <title>Мое Telegram WebApp</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <h1>Кликер</h1>
-    <button id="click-button">Кликни меня!</button>
-    <div id="clicks-counter">0</div>
+  <h1>Добро пожаловать в мое Telegram WebApp!</h1>
+  <p>Нажмите на кнопку, чтобы увеличить счетчик кликов:</p>
+  <button id="click-button">Кликни меня!</button>
 
-    <script>
-        let clicks = 0;
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const webApp = new Telegram.WebApp();
+      webApp.expand();
 
-        document.getElementById("click-button").addEventListener("click", function() {
-            clicks++;
-            document.getElementById("clicks-counter").textContent = clicks;
-
-            // Отправляем данные о количестве кликов в бота
-            try {
-                if (window.Telegram && window.Telegram.WebApp) {
-                    window.Telegram.WebApp.sendData(JSON.stringify({ clicks: clicks }));
-                    console.log(`Отправлено ${clicks} кликов в бота`);
-                    window.Telegram.WebApp.close();
-                } else {
-                    console.error("Telegram WebApp API не доступен");
-                }
-            } catch (e) {
-                console.error("Ошибка при отправке данных в бота:", e);
-            }
-        });
-    </script>
+      document.getElementById('click-button').addEventListener('click', function() {
+        webApp.sendData('click_1');
+      });
+    });
+  </script>
 </body>
 </html>
