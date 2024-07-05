@@ -1,47 +1,25 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Кликер</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f0f0;
-            padding: 20px;
-        }
-
-        #click-button {
-            font-size: 24px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        #clicks-counter {
-            font-size: 36px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Кликер</h1>
-    <button id="click-button">Кликни меня!</button>
-    <div id="clicks-counter">0</div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <h1>Счетчик кликов: <span id="click-count">{{ click_count }}</span></h1>
+    <button id="click-button">Нажми меня!</button>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const webApp = new Telegram.WebApp();
-      webApp.expand();
-
-      document.getElementById('click-button').addEventListener('click', function() {
-        webApp.sendData('click_1');
+      $(document).ready(function() {
+        $('#click-button').click(function() {
+          $.ajax({
+            url: '/click',
+            type: 'POST',
+            success: function(data) {
+              $('#click-count').text(data);
+            }
+          });
+        });
       });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
