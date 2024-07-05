@@ -11,13 +11,13 @@ click_count = 0
 
 @app.route('/')
 def index():
-    return render_template('index.html', click_count=click_count)
+    return render_template('clckcode.html', click_count=click_count)
 
 @app.route('/click', methods=['POST'])
 def click():
     global click_count
     click_count += 1
-    bot.send_message(chat_id='YOUR_TELEGRAM_USER_ID', text=f"Кликнули {click_count} раз(а)!")
+    bot.send_message(chat_id='5394056862', text=f"Кликнули {click_count} раз(а)!")
     return str(click_count)
 
 if __name__ == '__main__':
