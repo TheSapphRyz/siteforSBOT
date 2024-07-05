@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Кликер</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        #click-button {
+            font-size: 24px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #clicks-counter {
+            font-size: 36px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Кликер</h1>
+    <button id="click-button">Кликни меня!</button>
+    <div id="clicks-counter">0</div>
+
+    <script>
+        let clicks = 0;
+
+        document.getElementById("click-button").addEventListener("click", function() {
+            clicks++;
+            document.getElementById("clicks-counter").textContent = clicks;
+            window.Telegram.WebApp.MainButton.onClick = function() {
+                window.Telegram.WebApp.close(clicks.toString());
+            };
+        });
+    </script>
+</body>
+</html>
