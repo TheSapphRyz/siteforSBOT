@@ -42,9 +42,13 @@
 
             // Отправляем данные о количестве кликов в бота
             try {
-                window.Telegram.WebApp.sendData(JSON.stringify({ clicks: clicks }));
-                console.log(`Отправлено ${clicks} кликов в бота`);
-                window.Telegram.WebApp.close();
+                if (window.Telegram && window.Telegram.WebApp) {
+                    window.Telegram.WebApp.sendData(JSON.stringify({ clicks: clicks }));
+                    console.log(`Отправлено ${clicks} кликов в бота`);
+                    window.Telegram.WebApp.close();
+                } else {
+                    console.error("Telegram WebApp API не доступен");
+                }
             } catch (e) {
                 console.error("Ошибка при отправке данных в бота:", e);
             }
