@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Telegram Web App</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <h1>Счетчик кликов</h1>
+  <button id="increment_button">Нажми меня!</button>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      Telegram.WebApp.onEvent('button_clicked', function(buttonData) {
+        const buttonId = buttonData.button_id;
+        if (buttonId === 'increment_button') {
+          Telegram.WebApp.sendData('increment');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
