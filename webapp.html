@@ -8,6 +8,7 @@
 <body>
   <h1>Счетчик кликов</h1>
   <button id="increment_button">Нажми меня!</button>
+  <div id="click_count"></div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -16,6 +17,13 @@
         if (buttonId === 'increment_button') {
           Telegram.WebApp.sendData('increment');
         }
+      });
+
+      Telegram.WebApp.ready();
+
+      // Получение количества кликов из бота
+      Telegram.WebApp.onEvent('update_click_count', function(clickCount) {
+        document.getElementById('click_count').textContent = `Количество кликов: ${clickCount}`;
       });
     });
   </script>
