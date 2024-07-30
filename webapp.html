@@ -40,6 +40,7 @@
         let btn2 = document.getElementById("btn2");
         
         btn.addEventListener("click", () => {
+            Telegram.WebApp.sendData('btn');
             Telegram.WebApp.close();
         });
 
