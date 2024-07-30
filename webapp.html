@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Doc</title>
+    <title>test</title>
     <style>
         button {
             border: 0;
@@ -19,7 +19,7 @@
         }
 
         button:hover {
-            background: #4682B4;
+            background: var(--tg-theme-secondary-bg-color);
         }
     </style>
 </head>
@@ -27,9 +27,17 @@
     <div id="main">
         <h1>Тест</h1>
         <img scr="https://d3dwep9z8m8y9r.cloudfront.net/publications/2023/10/publications-10544/thumbnail/42295/Site_1738x800.png">
-        <button id="testbutn">Кнопка</button>
+        <button id="btn">Кнопка</button>
         <script src="https://telegram.org/js/telegram-web-add.js"></script>
+    </div>
+    <script>
+        let tg = window.Telegram.WebApp;
+        let btn = test.getElementById("btn")
 
+        btn.addEventListener("click", () => {
+            tg.close()
+        })
+    </script>
 
 </body>
 </html>
