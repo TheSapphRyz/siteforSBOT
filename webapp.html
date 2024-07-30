@@ -40,10 +40,10 @@
         let btn2 = document.getElementById("btn2");
         
         btn.addEventListener("click", () => {
-           console.log("Кнопка нажата!");
-           Telegram.WebApp.sendData('btn');
-           Telegram.WebApp.close();
+            Telegram.WebApp.sendDataFromEditor('btn');
+            Telegram.WebApp.close();
         });
+
         btn2.addEventListener("click", () => {
            console.log("Кнопка нажата!");
            Telegram.WebApp.sendData('btn');
