@@ -1,4 +1,4 @@
-<!doctype>
+<!doctype html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -26,20 +26,18 @@
 <body>
     <div id="main">
         <h1>Тест</h1>
-        <img scr="https://d3dwep9z8m8y9r.cloudfront.net/publications/2023/10/publications-10544/thumbnail/42295/Site_1738x800.png">
+        <img src="https://d3dwep9z8m8y9r.cloudfront.net/publications/2023/10/publications-10544/thumbnail/42295/Site_1738x800.png">
         <button id="btn">Кнопка</button>
-        <script src="https://telegram.org/js/telegram-web-add.js"></script>
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
     </div>
     <script>
-        let tg = window.Telegram.WebApp;
-        let btn = test.getElementById("btn");
-        tg.expand();
+        Telegram.WebApp.ready();
+        let btn = document.getElementById("btn");
         
         btn.addEventListener("click", () => {
-            tg.sendData('btn');
-            tg.close();
-        })
+            Telegram.WebApp.sendData('btn');
+            Telegram.WebApp.close();
+        });
     </script>
-
 </body>
 </html>
