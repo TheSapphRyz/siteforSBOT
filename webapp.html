@@ -32,12 +32,16 @@
     </div>
     <script>
         Telegram.WebApp.ready();
+        console.log("Веб-приложение инициализировано");
+
         let btn = document.getElementById("btn");
         
         btn.addEventListener("click", () => {
-            Telegram.WebApp.sendData('btn');
-            Telegram.WebApp.close();
+           console.log("Кнопка нажата!");
+           Telegram.WebApp.sendData('btn');
+           Telegram.WebApp.close();
         });
+
     </script>
 </body>
 </html>
