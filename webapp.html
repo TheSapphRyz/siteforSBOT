@@ -1,31 +1,14 @@
-<!DOCTYPE html>
+<!doctype>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Telegram Web App</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta charset="UTF-8">
+    <title>Doc</title>
+
 </head>
 <body>
-  <h1>Счетчик кликов</h1>
-  <button id="increment_button">Нажми меня!</button>
-  <div id="click_count"></div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      Telegram.WebApp.onEvent('button_clicked', function(buttonData) {
-        const buttonId = buttonData.button_id;
-        if (buttonId === 'increment_button') {
-          Telegram.WebApp.sendData('increment');
-        }
-      });
-
-      Telegram.WebApp.ready();
-
-      // Получение количества кликов из бота
-      Telegram.WebApp.onEvent('update_click_count', function(clickCount) {
-        document.getElementById('click_count').textContent = `Количество кликов: ${clickCount}`;
-      });
-    });
-  </script>
+    <div id="main">
+        <h1>Тест</h1>
+        <img scr="https://d3dwep9z8m8y9r.cloudfront.net/publications/2023/10/publications-10544/thumbnail/42295/Site_1738x800.png">
+        <button id="testbutn">Кнопка</button>
 </body>
 </html>
