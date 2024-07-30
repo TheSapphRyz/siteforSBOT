@@ -29,7 +29,6 @@
     <div id="main">
         <h1>Тест</h1>
         <button id="btn">Кнопка</button>
-        <button id="btn2">Тест</button>
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
     </div>
     <script>
@@ -37,16 +36,11 @@
         console.log("Веб-приложение инициализировано");
 
         let btn = document.getElementById("btn");
-        let btn2 = document.getElementById("btn2");
         
         btn.addEventListener("click", () => {
             Telegram.WebApp.sendData('btn');
             Telegram.WebApp.close();
         });
-
-        btn2.addEventListener("click", () => {
-           console.log("Кнопка нажата!");
-           Telegram.WebApp.sendData('btn');
 
     </script>
 </body>
