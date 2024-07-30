@@ -32,13 +32,12 @@
     </div>
     <script>
         let tg = window.Telegram.WebApp;
-        let btn = test.getElementById("btn")
-
+        let btn = test.getElementById("btn");
+        tg.expand();
+        
         btn.addEventListener("click", () => {
-            test.getElementById("btn")
-        })
-        order.addEventListener("click", () => {
-            tg.close()
+            tg.sendData('btn');
+            tg.close();
         })
     </script>
 
