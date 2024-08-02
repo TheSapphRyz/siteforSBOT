@@ -38,7 +38,11 @@
         let btn = document.getElementById("btn");
         
         btn.addEventListener("click", () => {
-            Telegram.WebApp.sendData('btn');
+            if (Telegram.WebApp.isClosing) {
+                Telegram.WebApp.close();
+            } else {
+                Telegram.WebApp.sendData('btn');
+            }
         });
 
     </script>
