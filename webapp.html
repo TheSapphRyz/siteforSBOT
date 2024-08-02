@@ -27,8 +27,8 @@
 </head>
 <body>
     <div id="main">
-        <h1>Тест</h1>
-        <button id="btn">Кнопка</button>
+        <h1>Кликайте по кнопке чтобы получить mRTC</h1>
+        <button id="btn">Майнить</button>
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
     </div>
     <script>
@@ -39,7 +39,6 @@
         
         btn.addEventListener("click", () => {
             Telegram.WebApp.sendData('btn');
-            Telegram.WebApp.close();
         });
 
     </script>
