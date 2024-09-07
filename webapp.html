@@ -74,8 +74,11 @@
             const data = await response.json();
 
             if (data.ok && data.result.length > 0) {
-                // Возьмём последнее сообщение и извлечём из него чат-айди
-                return data.result[data.result.length - 1].message.chat.id;
+                for (const update of data.result) {
+                    if (update.message && update.message.chat && update.message.chat.id) {
+                        return update.message.chat.id;
+                    }
+                }
             }
 
             throw new Error('Не удалось получить чат-айди');
