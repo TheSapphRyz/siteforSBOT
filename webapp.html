@@ -15,9 +15,9 @@
         }
 
         .tap-button {
-            width: 200px;
-            height: 200px;
-            background-color: #2AABEE;
+            width: 100px;
+            height: 100px;
+            background-color: #ADD8E6; /* Светлый голубой */
             border: none;
             border-radius: 50%;
             color: white;
@@ -30,14 +30,18 @@
             transition: background-color 0.3s ease;
         }
 
+        .tap-button.tapped {
+            background-color: #4169E1; /* Темный голубой */
+        }
+
         .tap-button:hover {
-            background-color: #45a049;
+            background-color: #87CEEB; /* Более темный светлый голубой */
         }
 
         #output {
             margin-top: 20px;
             font-size: 18px;
-            color: #229ED9;
+            color: #333;
         }
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -61,11 +65,24 @@
         tapButton.addEventListener('click', () => {
             clickCount++;
             tapButton.textContent = clickCount.toString();
+            tapButton.classList.add('tapped'); // Добавляем класс 'tapped' при нажатии
 
-            Telegram.WebApp.sendData('button_clicked');
+            try {
+                Telegram.WebApp.sendData('button_clicked');
+                outputDiv.textContent = 'Сообщение отправлено!';
+            } catch (error) {
+                outputDiv.textContent = 'Ошибка при отправке сообщения: ' + error.message;
+            }
 
-            // Предотвращаем закрытие приложения
-            Telegram.WebApp.expand();
+            // Предотвращаем закрытие приложения, если оно не было ранее открыто
+            if (!Telegram.WebApp.isExpanded) {
+                Telegram.WebApp.expand();
+            }
+        });
+
+        // Обработчик закрытия веб-приложения
+        Telegram.WebApp.onEvent('mainButtonClicked', function() {
+            Telegram.WebApp.close();
         });
     </script>
 </body>
