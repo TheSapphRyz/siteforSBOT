@@ -26,6 +26,11 @@
             margin: 4px 2px;
             cursor: pointer;
             border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #45a049;
         }
 
         #output {
@@ -49,13 +54,17 @@
 
         Telegram.WebApp.ready();
 
+        // Отправляем данные в Телеграм-бота
         sendButton.addEventListener('click', () => {
             try {
-                Telegram.WebApp.sendData('Пользователь нажал кнопку!');
+                Telegram.WebApp.sendData('button_clicked');
                 outputDiv.textContent = 'Сообщение отправлено!';
             } catch (error) {
                 outputDiv.textContent = 'Ошибка при отправке сообщения: ' + error.message;
             }
+
+            // Предотвращаем закрытие приложения
+            Telegram.WebApp.expand();
         });
     </script>
 </body>
