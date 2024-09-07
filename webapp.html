@@ -15,9 +15,9 @@
         }
 
         .tap-button {
-            width: 100px;
-            height: 100px;
-            background-color: #4CAF50;
+            width: 200px;
+            height: 200px;
+            background-color: #2AABEE;
             border: none;
             border-radius: 50%;
             color: white;
@@ -62,12 +62,7 @@
             clickCount++;
             tapButton.textContent = clickCount.toString();
 
-            try {
-                Telegram.WebApp.sendData('button_clicked');
-                outputDiv.textContent = 'Сообщение отправлено!';
-            } catch (error) {
-                outputDiv.textContent = 'Ошибка при отправке сообщения: ' + error.message;
-            }
+            Telegram.WebApp.sendData('button_clicked');
 
             // Предотвращаем закрытие приложения
             Telegram.WebApp.expand();
