@@ -3,7 +3,37 @@
 <head>
     <title>Телеграм-бот</title>
     <style>
-        /* Стили остались без изменений */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .button {
+            font-size: 18px;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        #output {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -20,18 +50,13 @@
 
         Telegram.WebApp.ready();
 
-        // Отправляем данные в Телеграм-бота
-        async function sendData(data) {
+        sendButton.addEventListener('click', () => {
             try {
-                await Telegram.WebApp.sendDataFromWidget(data);
+                Telegram.WebApp.sendData('Пользователь нажал кнопку!');
                 outputDiv.textContent = 'Сообщение отправлено!';
             } catch (error) {
                 outputDiv.textContent = 'Ошибка при отправке сообщения: ' + error.message;
             }
-        }
-
-        sendButton.addEventListener('click', () => {
-            sendData('Пользователь нажал кнопку!');
         });
     </script>
 </body>
