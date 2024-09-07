@@ -14,22 +14,23 @@
             background-color: #f1f1f1;
         }
 
-        .button {
+        .tap-button {
+            width: 100px;
+            height: 100px;
             background-color: #4CAF50;
             border: none;
+            border-radius: 50%;
             color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            border-radius: 4px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             transition: background-color 0.3s ease;
         }
 
-        .button:hover {
+        .tap-button:hover {
             background-color: #45a049;
         }
 
@@ -43,27 +44,27 @@
 </head>
 <body>
     <h1>Мое веб-приложение для Телеграм-бота</h1>
-    <button class="button" id="send-button">Отправить сообщение в бота</button>
+    <button class="tap-button" id="tap-button">0</button>
     <div id="output"></div>
 
     <script>
         const TOKEN = '7121996431:AAG9_-LyjNxwPTbLjx9eR9vRClAe1XeHd28';
 
-        const sendButton = document.getElementById('send-button');
+        const tapButton = document.getElementById('tap-button');
         const outputDiv = document.getElementById('output');
+
+        let clickCount = 0;
 
         Telegram.WebApp.ready();
 
-        // Отправляем данные в Телеграм-бота
-        sendButton.addEventListener('click', () => {
+        // Отправляем данные в Телеграм-бота при клике на тапалку
+        tapButton.addEventListener('click', () => {
+            clickCount++;
+            tapButton.textContent = clickCount.toString();
+
             try {
-                // Используем Telegram.WebApp.MainButton вместо Telegram.WebApp.sendData
-                Telegram.WebApp.MainButton.setText("Отправляю сообщение...");
-                Telegram.WebApp.MainButton.onClick(function() {
-                    Telegram.WebApp.sendData('button_clicked');
-                    outputDiv.textContent = 'Сообщение отправлено!';
-                });
-                Telegram.WebApp.MainButton.show();
+                Telegram.WebApp.sendData('button_clicked');
+                outputDiv.textContent = 'Сообщение отправлено!';
             } catch (error) {
                 outputDiv.textContent = 'Ошибка при отправке сообщения: ' + error.message;
             }
