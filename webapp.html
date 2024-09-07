@@ -17,7 +17,7 @@
         .tap-button {
             width: 100px;
             height: 100px;
-            background-color: #2AABEE; /* Светлый голубой */
+            background-color: #ADD8E6; /* Светлый голубой */
             border: none;
             border-radius: 50%;
             color: white;
@@ -31,11 +31,11 @@
         }
 
         .tap-button.tapped {
-            background-color: #229ED9; /* Темный голубой */
+            background-color: #4169E1; /* Темный голубой */
         }
 
         .tap-button:hover {
-            background-color: #30A3E6; /* Более темный светлый голубой */
+            background-color: #87CEEB; /* Более темный светлый голубой */
         }
 
         #output {
@@ -50,8 +50,10 @@
     <h1>Мое веб-приложение для Телеграм-бота</h1>
     <button class="tap-button" id="tap-button">0</button>
     <div id="output"></div>
+
     <script>
         const TOKEN = '7121996431:AAG9_-LyjNxwPTbLjx9eR9vRClAe1XeHd28';
+        const WEBAPP_URL = 'https://your-github-pages-url.github.io/webapp/'; // Замените на ваш URL
 
         const tapButton = document.getElementById('tap-button');
         const outputDiv = document.getElementById('output');
@@ -80,9 +82,12 @@
         });
 
         // Обработчик закрытия веб-приложения
-        Telegram.WebApp.onEvent('mainButtonClicked', function() {
+        Telegram.WebApp.onEvent('mainButtonClicked', () => {
             Telegram.WebApp.close();
         });
+
+        // Устанавливаем URL веб-приложения
+        Telegram.WebApp.initData(WEBAPP_URL);
     </script>
 </body>
 </html>
