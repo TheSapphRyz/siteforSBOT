@@ -47,30 +47,8 @@
         const sendButton = document.getElementById('send-button');
         const outputDiv = document.getElementById('output');
 
-        sendButton.addEventListener('click', async () => {
-            try {
-                const chatId = await getChatId();
-                await sendMessageToBot(chatId, 'Пользователь нажал кнопку!');
-                outputDiv.textContent = 'Сообщение отправлено!';
-            } catch (error) {
-                outputDiv.textContent = 'Ошибка при отправке сообщения: ' + error.message;
-            }
-        });
-
-        // Функция для получения чат-айди от Телеграм-бота
-        async function getChatId() {
-            const response = await fetch(`https://api.telegram.org/bot${TOKEN}/getUpdates`);
-            const data = await response.json();
-
-            if (data.ok && data.result.length > 0) {
-                return data.result[data.result.length - 1].message.chat.id;
-            }
-
-            throw new Error('Не удалось получить чат-айди');
-        }
-
-        // Функция для отправки сообщения в Телеграм-бота
-        async function sendMessageToBot(chatId, message) {
+        // Отправляем данные в Телеграм-бота
+        async function sendData(chatId, message) {
             const response = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
                 method: 'POST',
                 headers: {
@@ -89,6 +67,29 @@
             const data = await response.json();
             return data.result;
         }
+
+        // Получаем чат-айди от Телеграм-бота
+        async function getChatId() {
+            const response = await fetch(`https://api.telegram.org/bot${TOKEN}/getUpdates`);
+            const data = await response.json();
+
+            if (data.ok && data.result.length > 0) {
+                // Возьмём последнее сообщение и извлечём из него чат-айди
+                return data.result[data.result.length - 1].message.chat.id;
+            }
+
+            throw new Error('Не удалось получить чат-айди');
+        }
+
+        sendButton.addEventListener('click', async () => {
+            try {
+                const chatId = await getChatId();
+                await sendData(chatId, 'Пользователь нажал кнопку!');
+                outputDiv.textContent = 'Сообщение отправлено!';
+            } catch (error) {
+                outputDiv.textContent = 'Ошибка при отправке сообщения: ' + error.message;
+            }
+        });
     </script>
 </body>
 </html>
