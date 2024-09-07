@@ -42,7 +42,7 @@
     <div id="output"></div>
 
     <script>
-        const TOKEN = '7121996431:AAG9_-LyjNxwPTbLjx9eR9vRClAe1XeHd28'; // Вставь свой API-ключ Телеграм-бота
+        const TOKEN = '7121996431:AAG9_-LyjNxwPTbLjx9eR9vRClAe1XeHd28';
 
         const sendButton = document.getElementById('send-button');
         const outputDiv = document.getElementById('output');
@@ -70,15 +70,12 @@
 
         // Получаем чат-айди от Телеграм-бота
         async function getChatId() {
-            const response = await fetch(`https://api.telegram.org/bot${TOKEN}/getUpdates`);
+            const response = await fetch(`https://api.telegram.org/bot${TOKEN}/getUpdates?offset=-1`);
             const data = await response.json();
 
             if (data.ok && data.result.length > 0) {
-                for (const update of data.result) {
-                    if (update.message && update.message.chat && update.message.chat.id) {
-                        return update.message.chat.id;
-                    }
-                }
+                // Возьмём последнее сообщение и извлечём из него чат-айди
+                return data.result[0].message.chat.id;
             }
 
             throw new Error('Не удалось получить чат-айди');
