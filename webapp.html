@@ -2,33 +2,58 @@
 <html>
 <head>
     <title>Телеграм-бот</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .button {
+            font-size: 18px;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        #output {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
     <h1>Мое веб-приложение для Телеграм-бота</h1>
-    <input type="text" id="message-input" placeholder="Введите сообщение">
-    <button id="send-button">Отправить в бота</button>
+    <button class="button" id="send-button">Отправить сообщение в бота</button>
     <div id="output"></div>
 
     <script>
         const TOKEN = '7121996431:AAG9_-LyjNxwPTbLjx9eR9vRClAe1XeHd28'; // Вставь свой API-ключ Телеграм-бота
 
-        const messageInput = document.getElementById('message-input');
         const sendButton = document.getElementById('send-button');
         const outputDiv = document.getElementById('output');
 
-        let CHAT_ID = null; // Будем хранить чат-айди здесь
-
-        sendButton.addEventListener('click', () => {
-            const message = messageInput.value.trim();
-            if (message) {
-                sendMessageToBot(message)
-                    .then(() => {
-                        outputDiv.textContent = 'Сообщение отправлено!';
-                        messageInput.value = '';
-                    })
-                    .catch((error) => {
-                        outputDiv.textContent = 'Ошибка при отправке сообщения: ' + error.message;
-                    });
+        sendButton.addEventListener('click', async () => {
+            try {
+                const chatId = await getChatId();
+                await sendMessageToBot(chatId, 'Пользователь нажал кнопку!');
+                outputDiv.textContent = 'Сообщение отправлено!';
+            } catch (error) {
+                outputDiv.textContent = 'Ошибка при отправке сообщения: ' + error.message;
             }
         });
 
@@ -38,26 +63,21 @@
             const data = await response.json();
 
             if (data.ok && data.result.length > 0) {
-                const lastUpdate = data.result[data.result.length - 1];
-                return lastUpdate.message.chat.id;
+                return data.result[data.result.length - 1].message.chat.id;
             }
 
             throw new Error('Не удалось получить чат-айди');
         }
 
         // Функция для отправки сообщения в Телеграм-бота
-        async function sendMessageToBot(message) {
-            if (CHAT_ID === null) {
-                CHAT_ID = await getChatId();
-            }
-
+        async function sendMessageToBot(chatId, message) {
             const response = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    chat_id: CHAT_ID,
+                    chat_id: chatId,
                     text: message
                 })
             });
@@ -69,16 +89,6 @@
             const data = await response.json();
             return data.result;
         }
-
-        // Получаем чат-айди при загрузке страницы
-        getChatId()
-            .then((chatId) => {
-                CHAT_ID = chatId;
-                console.log(`Чат-айди: ${CHAT_ID}`);
-            })
-            .catch((error) => {
-                outputDiv.textContent = 'Ошибка при получении чат-айди: ' + error.message;
-            });
     </script>
 </body>
 </html>
