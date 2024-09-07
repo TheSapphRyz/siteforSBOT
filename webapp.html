@@ -57,8 +57,13 @@
         // Отправляем данные в Телеграм-бота
         sendButton.addEventListener('click', () => {
             try {
-                Telegram.WebApp.sendData('button_clicked');
-                outputDiv.textContent = 'Сообщение отправлено!';
+                // Используем Telegram.WebApp.MainButton вместо Telegram.WebApp.sendData
+                Telegram.WebApp.MainButton.setText("Отправляю сообщение...");
+                Telegram.WebApp.MainButton.onClick(function() {
+                    Telegram.WebApp.sendData('button_clicked');
+                    outputDiv.textContent = 'Сообщение отправлено!';
+                });
+                Telegram.WebApp.MainButton.show();
             } catch (error) {
                 outputDiv.textContent = 'Ошибка при отправке сообщения: ' + error.message;
             }
