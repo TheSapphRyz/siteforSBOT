@@ -50,7 +50,6 @@
     <h1>Мое веб-приложение для Телеграм-бота</h1>
     <button class="tap-button" id="tap-button">0</button>
     <div id="output"></div>
-
     <script>
         const TOKEN = '7121996431:AAG9_-LyjNxwPTbLjx9eR9vRClAe1XeHd28';
 
@@ -65,10 +64,10 @@
         tapButton.addEventListener('click', () => {
             clickCount++;
             tapButton.textContent = clickCount.toString();
-            tapButton.classList.add('tapped'); // Добавляем класс 'tapped' при нажатии
+            tapButton.classList.add('tapped');
 
             try {
-                Telegram.WebApp.sendData('button_clicked');
+                Telegram.WebApp.sendData(JSON.stringify({ action: 'button_clicked' }));
                 outputDiv.textContent = 'Сообщение отправлено!';
             } catch (error) {
                 outputDiv.textContent = 'Ошибка при отправке сообщения: ' + error.message;
