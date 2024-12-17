@@ -80,11 +80,13 @@
     <div class="app-container">
         <div class="header">
             <div class="user-info">
+
                 <img id="avatar" src="https://via.placeholder.com/40" alt="Avatar">
                 <span id="username">Пользователь</span>
                 <span id="balance">Баланс: 100₽</span>
             </div>
         </div>
+
         <div class="content">
             <h2>Контент мини приложения</h2>
             <p>Здесь будет работать ваше мини приложение.</p>
@@ -99,14 +101,12 @@
 
     <script>
         function initializeTelegramWebApp() {
-            // Проверка наличия объекта WebApp
-            if (window.Telegram && window.Telegram.WebApp.initDataUnsafe) {
-                const data = JSON.parse(decodeURIComponent(window.Telegram.WebApp.initDataUnsafe));
-                
-                // Устанавливаем юзернейм и аватар пользователя
-                document.getElementById('username').innerText = data.user.username || "Без имени";
-                const avatarUrl = data.user.photo_url || "https://via.placeholder.com/40"; // Если аватарки нет, используем заглушку
-                document.getElementById('avatar').src = avatarUrl;
+            const data = window.Telegram.WebApp.initDataUnsafe;
+            
+            if (data) {
+                const user = JSON.parse(decodeURIComponent(data)); // Декодируем и получаем объект пользователя
+                document.getElementById('username').innerText = user.user.username || "Без имени"; // Установка юзернейма
+                document.getElementById('avatar').src = user.user.photo_url || "https://via.placeholder.com/40"; // Устанавливаем аватар пользователя
             }
         }
 
