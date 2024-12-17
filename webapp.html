@@ -80,70 +80,67 @@
     <div class="app-container">
         <div class="header">
             <div class="user-info">
+                <img id="avatar" src="https://via.placeholder.com/40" alt="Avatar">
+                <span id="username">Пользователь</span>
+                <span id="balance">Баланс: 100₽</span>
+            </div>
+        </div>
 
-              <img id="avatar" src="https://via.placeholder.com/40" alt="Avatar">
-              <span id="username">Пользователь</span>
-              <span id="balance">Баланс: 100₽</span>
-          </div>
-      </div>
+        <div class="content">
+            <h2>Контент мини приложения</h2>
+            <p>Здесь будет работать ваше мини приложение.</p>
+        </div>
 
-      <div class="content">
-          <h2>Контент мини приложения</h2>
-          <p>Здесь будет работать ваше мини приложение.</p>
-      </div>
+        <div class="footer">
+            <button onclick="button1Click()">Кнопка 1</button>
+            <button onclick="button2Click()">Кнопка 2</button>
+            <button onclick="button3Click()">Кнопка 3</button>
+        </div>
+    </div>
 
-      <div class="footer">
-          <button onclick="button1Click()">Кнопка 1</button>
-          <button onclick="button2Click()">Кнопка 2</button>
-          <button onclick="button3Click()">Кнопка 3</button>
-      </div>
-  </div>
+    <script>
+        function initializeTelegramWebApp() {
+            // Проверка наличия объекта WebApp
+            if (window.Telegram && window.Telegram.WebApp.initDataUnsafe) {
+                const data = JSON.parse(decodeURIComponent(window.Telegram.WebApp.initDataUnsafe));
+                document.getElementById('username').innerText = data.user.username; // Устанавливаем юзернейм
 
-  <script>
-      function initializeTelegramWebApp() {
-          // Проверка наличия объекта WebApp
-          if (window.Telegram && window.Telegram.WebApp.initDataUnsafe) {
-              const data = JSON.parse(decodeURIComponent(window.Telegram.WebApp.initDataUnsafe));
-              document.getElementById('username').innerText = data.user.username;
-              document.getElementById('avatar').src = data.user.photo_url || "https://via.placeholder.com/40"; // Устанавливаем аватар пользователя, если он есть
-          }
-      }
+                document.getElementById('avatar').src = data.user.photo_url || "https://via.placeholder.com/40"; // Устанавливаем аватар пользователя
+            }
+        }
 
-      // Функция для отправки данных на сервер
-      function sendData(data) {
-          fetch('http://127.0.0.1:5000/send-data', { // Замените на адрес вашего сервера
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(data) // Преобразуем объект JavaScript в JSON
-          })
-          .then(response => response.json())
-          .then(data => {
-              console.log('Success:', data);
-              alert(data.message);
-          })
-          .catch((error) => {
-              console.error('Error:', error);
-              alert('Ошибка при отправке данных.');
-          });
-      }
+        // Функция для отправки данных на сервер
+        function sendData(data) {
+            fetch('http://127.0.0.1:5000/send-data', { // Замените на адрес вашего сервера
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data) // Преобразуем объект JavaScript в JSON
+            })
+            .then(response => {
+                // Не обрабатываем ответ, просто игнорируем его
+            })
+            .catch((error) => {
+                console.error('Error:', error); // Логируем ошибки
+            });
+        }
 
-      function button1Click() {
-          const dataToSend = { action: 'button1', value: 'Кнопка 1 нажата' };
-          sendData(dataToSend);
-      }
+        function button1Click() {
+            const dataToSend = { action: 'button1', value: 'Кнопка 1 нажата' };
+            sendData(dataToSend);
+        }
 
-      function button2Click() {
-          const dataToSend = { action: 'button2', value: 'Кнопка 2 нажата' };
-          sendData(dataToSend);
-      }
+        function button2Click() {
+            const dataToSend = { action: 'button2', value: 'Кнопка 2 нажата' };
+            sendData(dataToSend);
+        }
 
-      function button3Click() {
-          const dataToSend = { action: 'button3', value: 'Кнопка 3 нажата' };
-          sendData(dataToSend);
-      }
-  </script>
+        function button3Click() {
+            const dataToSend = { action: 'button3', value: 'Кнопка 3 нажата' };
+            sendData(dataToSend);
+        }
+    </script>
 
 </body>
 
