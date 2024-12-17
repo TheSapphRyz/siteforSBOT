@@ -1,93 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
+
 <head>
-    <title>Телеграм-бот</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Telegram Mini App</title>
+    <script async src="https://telegram.org/js/telegram-web-app.js"></script> 
     <style>
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
             margin: 0;
-            background-color: #f1f1f1;
+            font-family: Arial, sans-serif;
+            background-color: #2f3136; /* Темный фон, как в Discord */
+            color: #ffffff; /* Белый текст */
+            width: 375px; /* Фиксированная ширина, как у мобильных устройств */
+            overflow: hidden; /* Запретить прокрутку */
         }
 
-        .tap-button {
-            width: 100px;
-            height: 100px;
-            background-color: #ADD8E6; /* Светлый голубой */
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 24px;
+        .header {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #202225; /* Цвет заголовка */
+        }
+
+        .header img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+        }
+
+        .header .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .user-info span {
+            margin-left: 10px;
+        }
+
+        .content {
+            padding: 20px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            background-color: #202225;
+            padding: 10px 0;
+        }
+
+        .footer button {
+            background-color: #7289da; /* Цвет кнопок */
+            color: #ffffff; /* Цвет текста */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
             cursor: pointer;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s;
         }
 
-        .tap-button.tapped {
-            background-color: #4169E1; /* Темный голубой */
-        }
-
-        .tap-button:hover {
-            background-color: #87CEEB; /* Более темный светлый голубой */
-        }
-
-        #output {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #333;
+        .footer button:hover {
+            background-color: #5b6eae; /* Цвет кнопки при наведении */
         }
     </style>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
-<body>
-    <h1>Мое веб-приложение для Телеграм-бота</h1>
-    <button class="tap-button" id="tap-button">0</button>
-    <div id="output"></div>
+
+<body onload="initializeTelegramWebApp()">
+
+    <div class="header">
+        <div class="user-info">
+            <img src="https://via.placeholder.com/40" alt="Avatar">
+            <span id="username">Пользователь</span>
+            <span id="balance">Баланс: 100₽</span>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>Контент мини приложения</h2>
+        <p>Здесь будет работать ваше мини приложение.</p>
+    </div>
+
+    <div class="footer">
+        <button onclick="button1Click()">Кнопка 1</button>
+        <button onclick="button2Click()">Кнопка 2</button>
+        <button onclick="button3Click()">Кнопка 3</button>
+    </div>
 
     <script>
-        const TOKEN = '7121996431:AAG9_-LyjNxwPTbLjx9eR9vRClAe1XeHd28';
-        const WEBAPP_URL = 'https://your-github-pages-url.github.io/webapp/'; // Замените на ваш URL
+      
+        function initializeTelegramWebApp() {
+            // Инициализация Telegram Web App
+            window.Telegram = window.Telegram || {};
+            window.Telegram.WebApp = {
+                initData: '',
+                initDataUnsafe: '',
+                user: {},
+                themeParams: {},
+                onEvent: function (event, callback) {
+                    // Обрабка событий
+                },
+                // Другие методы и параметры Telegram Web App
+            };
 
-        const tapButton = document.getElementById('tap-button');
-        const outputDiv = document.getElementById('output');
+            // Получение данных о пользователе
+            if (window.Telegram.WebApp.initDataUnsafe) {
 
-        let clickCount = 0;
-
-        Telegram.WebApp.ready();
-
-        // Отправляем данные в Телеграм-бота при клике на тапалку
-        tapButton.addEventListener('click', () => {
-            clickCount++;
-            tapButton.textContent = clickCount.toString();
-            tapButton.classList.add('tapped');
-
-            try {
-                Telegram.WebApp.sendData(JSON.stringify({ action: 'button_clicked' }));
-                outputDiv.textContent = 'Сообщение отправлено!';
-            } catch (error) {
-                outputDiv.textContent = 'Ошибка при отправке сообщения: ' + error.message;
+              const data = JSON.parse(decodeURIComponent(window.Telegram.WebApp.initDataUnsafe));
+                document.getElementById('username').innerText = data.user.username;
+                // Здесь можно установить другие данные пользователя.
             }
+        }
 
-            // Предотвращаем закрытие приложения, если оно не было ранее открыто
-            if (!Telegram.WebApp.isExpanded) {
-                Telegram.WebApp.expand();
-            }
-        });
+        // Функция для отправки данных на сервер
+        function sendData(data) {
+            fetch('http://127.0.0.1:5000/send-data', { // Замените на адрес вашего сервера
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data) // Преобразуем объект JavaScript в JSON
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert(data.message);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Ошибка при отправке данных.');
+            });
+        }
 
-        // Обработчик закрытия веб-приложения
-        Telegram.WebApp.onEvent('mainButtonClicked', () => {
-            Telegram.WebApp.close();
-        });
+        function button1Click() {
+            const dataToSend = { action: 'button1', value: 'Кнопка 1 нажата' };
+            sendData(dataToSend);
+        }
 
-        // Устанавливаем URL веб-приложения
-        Telegram.WebApp.initData(WEBAPP_URL);
+        function button2Click() {
+            const dataToSend = { action: 'button2', value: 'Кнопка 2 нажата' };
+            sendData(dataToSend);
+        }
+
+        function button3Click() {
+            const dataToSend = { action: 'button3', value: 'Кнопка 3 нажата' };
+            sendData(dataToSend);
+        }
     </script>
+<!-- Вставка скрипта Telegram -->
 </body>
+
 </html>
