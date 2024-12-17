@@ -80,8 +80,8 @@
     <div class="app-container">
         <div class="header">
             <div class="user-info">
-                <img id="avatar" src="" alt="Avatar">
-                <span id="username"></span>
+                <img id="avatar" src="" alt="Avatar" title="Аватар пользователя">
+                <span id="firstname"></span>
                 <span id="balance">Баланс: 100₽</span>
             </div>
         </div>
@@ -108,12 +108,17 @@
 
                 // Если есть данные, устанавливаем их
                 if (user) {
-                    const usernameElement = document.getElementById('username');
+                    const firstnameElement = document.getElementById('firstname');
 
                     const avatarElement = document.getElementById('avatar');
 
-                    usernameElement.innerText = user.username || "Не указан"; // Если юзернейм не указан, выводим "Не указан"
+                    firstnameElement.innerText = user.first_name || "Не указано"; // Замена username на first_name
                     avatarElement.src = user.photo_url || ""; // Устанавливаем аватарку, если есть
+
+                    // Проверяем, если аватарка не загрузилась, устанавливаем заглушку
+                    if (!avatarElement.src) {
+                        avatarElement.src = "https://via.placeholder.com/40"; // Заглушка для аватара
+                    }
                 }
             } else {
                 console.error("Не удалось получить данные пользователя.");
