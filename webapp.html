@@ -80,9 +80,8 @@
     <div class="app-container">
         <div class="header">
             <div class="user-info">
-
-                <img id="avatar" src="https://via.placeholder.com/40" alt="Avatar">
-                <span id="username">Пользователь</span>
+                <img id="avatar" src="" alt="Avatar">
+                <span id="username"></span>
                 <span id="balance">Баланс: 100₽</span>
             </div>
         </div>
@@ -101,12 +100,23 @@
 
     <script>
         function initializeTelegramWebApp() {
-            const data = window.Telegram.WebApp.initDataUnsafe;
-            
-            if (data) {
-                const user = JSON.parse(decodeURIComponent(data)); // Декодируем и получаем объект пользователя
-                document.getElementById('username').innerText = user.user.username || "Без имени"; // Установка юзернейма
-                document.getElementById('avatar').src = user.user.photo_url || "https://via.placeholder.com/40"; // Устанавливаем аватар пользователя
+            const initData = window.Telegram.WebApp.initDataUnsafe; // Получение данных инициализации
+
+            if (initData) {
+                const userData = JSON.parse(decodeURIComponent(initData)); // Декодировать данные
+                const user = userData.user;
+
+                // Если есть данные, устанавливаем их
+                if (user) {
+                    const usernameElement = document.getElementById('username');
+
+                    const avatarElement = document.getElementById('avatar');
+
+                    usernameElement.innerText = user.username || "Не указан"; // Если юзернейм не указан, выводим "Не указан"
+                    avatarElement.src = user.photo_url || ""; // Устанавливаем аватарку, если есть
+                }
+            } else {
+                console.error("Не удалось получить данные пользователя.");
             }
         }
 
@@ -120,7 +130,7 @@
                 body: JSON.stringify(data) // Преобразуем объект JavaScript в JSON
             })
             .then(response => {
-                // Не обрабатываем ответ, игнорируем его
+                // Не обрабатываем ответ
             })
             .catch((error) => {
                 console.error('Error:', error); // Логируем ошибки
