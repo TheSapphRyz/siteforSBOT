@@ -85,7 +85,6 @@
                 <span id="balance">Баланс: 100₽</span>
             </div>
         </div>
-
         <div class="content">
             <h2>Контент мини приложения</h2>
             <p>Здесь будет работать ваше мини приложение.</p>
@@ -103,9 +102,11 @@
             // Проверка наличия объекта WebApp
             if (window.Telegram && window.Telegram.WebApp.initDataUnsafe) {
                 const data = JSON.parse(decodeURIComponent(window.Telegram.WebApp.initDataUnsafe));
-                document.getElementById('username').innerText = data.user.username; // Устанавливаем юзернейм
-
-                document.getElementById('avatar').src = data.user.photo_url || "https://via.placeholder.com/40"; // Устанавливаем аватар пользователя
+                
+                // Устанавливаем юзернейм и аватар пользователя
+                document.getElementById('username').innerText = data.user.username || "Без имени";
+                const avatarUrl = data.user.photo_url || "https://via.placeholder.com/40"; // Если аватарки нет, используем заглушку
+                document.getElementById('avatar').src = avatarUrl;
             }
         }
 
@@ -119,7 +120,7 @@
                 body: JSON.stringify(data) // Преобразуем объект JavaScript в JSON
             })
             .then(response => {
-                // Не обрабатываем ответ, просто игнорируем его
+                // Не обрабатываем ответ, игнорируем его
             })
             .catch((error) => {
                 console.error('Error:', error); // Логируем ошибки
