@@ -90,6 +90,8 @@
         </div>
     </div>
     <script>
+        let tg = window.Telegram.WebApp; //получаем объект webapp телеграма 
+
         let score = 0;
         const dog = document.getElementById('dog');
         const scoreDisplay = document.getElementById('score');
@@ -105,8 +107,7 @@
             randomPosition();
         });
         randomPosition(); 
-    </script>
-    <script>
+
         function initializeTelegramWebApp() {
             if (window.Telegram && window.Telegram.WebApp.initDataUnsafe) {
                 const data = JSON.parse(decodeURIComponent(window.Telegram.WebApp.initDataUnsafe));
@@ -117,22 +118,8 @@
         }
 
         function getUserData() {
-            const telegramData = window.Telegram.WebApps.initData;
-
-            if (telegramData) {
-                const userData = JSON.parse(decodeURIComponent(telegramData));
-                
-                // Создаём объект с данными
-                const userInfo = {
-                    id: userData.user.id,
-                    username: userData.user.username,
-                    firstName: userData.user.first_name,
-                    lastName: userData.user.last_name,
-                };
-                sendData(userInfo);
-            } else {
-                console.error('Telegram data not found.');
-            }
+            const t = tg.initDataUnsafe.user.id
+            sendData(t)
         }
 
         // Вызов функции при загрузке
@@ -161,7 +148,6 @@
             sendData(dataToSend);
         }
         function button2Click() {
-            const dataToSend = { id: "telegram_id", value: 'Кнопка 2 нажата' };
             getUserData();
         }
         function button3Click() {
