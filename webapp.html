@@ -141,12 +141,15 @@
 
     </script>
     <script>
-        // Инициализация WebApp
+        // Переменная объявлена глобально
+        let user = {};
+
+// Инициализация WebApp
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Получение данных пользователя
-        const user = tg.initDataUnsafe?.user || {};
+// Получение данных пользователя
+        user = tg.initDataUnsafe?.user || {};
         const avatar = document.getElementById('avatar');
         const username = document.getElementById('username');
 
@@ -160,7 +163,7 @@
             console.error("Не удалось получить данные пользователя.");
         }
 
-        // Логика отправки данных на сервер
+// Логика отправки данных на сервер
         function sendData(data) {
             fetch('http://127.0.0.1:5000/send-data', {
                 method: 'POST',
@@ -168,29 +171,24 @@
                 body: JSON.stringify(data),
             })
             .then(response => response.json())
-            .then(result => {
-                console.log("Результат:", result);
-                if (result.message === "1") {
-                    alert("Данные успешно отправлены!");
-                }
-            })
             .catch(error => {
                 console.error("Ошибка отправки данных:", error);
             });
         }
 
-        // Пример действий при нажатии кнопок
+// Пример действий при нажатии кнопок
         function button1Click() {
             sendData({ action: "button1_click", userId: user.id });
         }
 
         function button2Click() {
             sendData({ action: "button2_click", user });
-        }
+        }   
 
         function button3Click() {
             sendData({ action: "button3_click", userId: user.id });
         }
+
     </script>
 </body>
 </html>
