@@ -90,6 +90,7 @@
         </div>
     </div>
     <script>
+
         let score = 0;
         const dog = document.getElementById('dog');
         const scoreDisplay = document.getElementById('score');
@@ -128,8 +129,7 @@
 
         //Collision detection function
         function checkCollision(dogX, dogY, scoreArea){
-            return (dogX + dogSize > scoreArea.x && dogX < scoreArea.x + scoreArea.w &&
-                    dogY + dogSize > scoreArea.y && dogY < scoreArea.y + scoreArea.h);
+            return (dogX + dogSize > scoreArea.x && dogX < scoreArea.x + scoreArea.w && dogY + dogSize > scoreArea.y && dogY < scoreArea.y + scoreArea.h);
         }
 
         dog.addEventListener('click', () => {
@@ -138,9 +138,11 @@
             randomPosition();
         });
         dog.onload = randomPosition;
+
     </script>
     <script>
         let tg = window.Telegram.WebApp; //получаем объект webapp телеграма 
+        tg.expand();
 
         function getUserData() {
             const t = tg.initDataUnsafe.user.id
@@ -170,7 +172,7 @@
             sendData(dataToSend);
         }
         function button2Click() {
-            getUserData();
+            getUserData;
         }
         function button3Click() {
             const dataToSend = { id: "telegram_id", value: 'Кнопка 3 нажата' };
