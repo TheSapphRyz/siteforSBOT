@@ -140,43 +140,29 @@
 
     </script>
     <script>
-        function updateUserInfo() {
-            const user = tg.initDataUnsafe?.user || {};
-            const username = user?.first_name || "Пользователь";
-            const avatar = user?.photo_url || "https://via.placeholder.com/40";
-
-            document.getElementById("username").textContent = username;
-            document.getElementById("avatar").src = avatar;
-        }
-
-        Telegram.WebApp.ready(); // Дождитесь полной загрузки WebApp
-        updateUserInfo();
-
-
-        let user = {};
-
         const tg = window.Telegram.WebApp;
-        tg.expand();
-        if (!tg.initData || !tg.initDataUnsafe) {
-            console.error("WebApp не запущен в Telegram. Данные пользователя недоступны.");
-        } else {
-            console.log("WebApp запущен через Telegram.");
-        }
-        console.log("InitDataUnsafe:", tg.initDataUnsafe);
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            // Ensure the WebApp API is initialized
+            tg.ready();
 
-        user = tg.initDataUnsafe?.user || {};
-        const avatar = document.getElementById('avatar');
-        const username = document.getElementById('username');
+            // Get user data
+            const user = tg.initDataUnsafe?.user;
 
-        if (user.id) {
-            console.log("User ID:", user.id);
-            username.textContent = user.first_name || "Пользователь";
-            if (user.photo_url) {
-                avatar.src = user.photo_url;
+            if (user) {
+                // Populate user info
+                const avatar = document.getElementById('user-avatar');
+                const userName = document.getElementById('user-name');
+                const userId = document.getElementById('user-id');
+
+                avatar.src = user.photo_url || 'https://via.placeholder.com/100';
+                userName.textContent = `${user.first_name} ${user.last_name || ''}`;
+                userId.textContent = `ID: ${user.id}`;
+            } else {
+                // If no user data, show defaults
+                document.getElementById('user-info').textContent = 'Unable to load user information.';
             }
-        } else {
-            console.error("Не удалось получить данные пользователя.");
-        }
+        });
 
         function sendData(data) {
             fetch('http://127.0.0.1:5000/send-data', {
