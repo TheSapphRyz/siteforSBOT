@@ -130,28 +130,6 @@
 
         randomPosition(); // Устанавливаем начальную позицию
     </script>
-
-    <script>
-        // Function to get user info from the Telegram API
-        function getUserInfo() {
-            const telegramData = new URL(window.location.href).searchParams.get("tgWebAppData");
-            if (telegramData) {
-                try {
-                    // Decode the base64 URL encoded data
-                    const decodedData = JSON.parse(atob(telegramData));
-                    const userId = decodedData.user.id;
-                    scoreDisplay.textContent = `${userId}`;
-                    // Now you can use the userId as needed, e.g. display it or send it to your server
-                } catch (error) {
-                    console.error("Error decoding telegram data:", error);
-                }
-            } else {
-                console.error("No Telegram data found");
-            }
-        }
-
-        window.onload = getUserInfo; // Call the function on window load
-    </script>
     
     <script>
         function initializeTelegramWebApp() {
@@ -181,14 +159,32 @@
             });
         }
 
+        function getUserInfo() {
+            const telegramData = new URL(window.location.href).searchParams.get("tgWebAppData");
+            if (telegramData) {
+                try {
+                    // Decode the base64 URL encoded data
+                    const decodedData = JSON.parse(atob(telegramData));
+                    const userId = decodedData.user.id;
+                    scoreDisplay.textContent = `${userId}`;
+                    // Now you can use the userId as needed, e.g. display it or send it to your server
+                } catch (error) {
+                    console.error("Error decoding telegram data:", error);
+                }
+            } else {
+                console.error("No Telegram data found");
+            }
+        }
+
+        window.onload = getUserInfo;
+        
         function button1Click() {
             const dataToSend = { action: 'button1', value: 'Кнопка 1 нажата' };
             sendData(dataToSend);
         }
 
         function button2Click() {
-            const dataToSend = { action: 'button2', value: 'Кнопка 2 нажата' };
-            sendData(dataToSend);
+            scoreDisplay.textContent = `${userId}`;
         }
 
         function button3Click() {
