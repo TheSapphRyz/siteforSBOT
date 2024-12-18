@@ -136,7 +136,7 @@
         }
 
         // Вызов функции при загрузке
-        window.onload = getUserData;
+        window.onload = getUserData();
 
         function sendData(data) {
             fetch('http://127.0.0.1:5000/send-data', { 
@@ -162,7 +162,7 @@
         }
         function button2Click() {
             const dataToSend = { id: "telegram_id", value: 'Кнопка 2 нажата' };
-            sendData(dataToSend);
+            getUserData();
         }
         function button3Click() {
             const dataToSend = { id: "telegram_id", value: 'Кнопка 3 нажата' };
