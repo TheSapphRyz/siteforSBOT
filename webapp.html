@@ -90,22 +90,54 @@
         </div>
     </div>
     <script>
-
         let score = 0;
         const dog = document.getElementById('dog');
         const scoreDisplay = document.getElementById('score');
+        const dogSize = 100; // Size of the dog image
+
+        function getAvailableSpace() {
+            const headerRect = document.querySelector('.header').getBoundingClientRect();
+            const footerRect = document.querySelector('.footer').getBoundingClientRect();
+            const scoreRect = document.getElementById('score').getBoundingClientRect();
+            const bodyRect = document.body.getBoundingClientRect();
+            const availableWidth = bodyRect.width;
+            const availableHeight = bodyRect.height - headerRect.height - footerRect.height;
+            const scoreAreaWidth = scoreRect.width + 20; //Add some padding
+            const scoreAreaHeight = scoreRect.height + 20;
+            const scoreAreaX = scoreRect.left;
+            const scoreAreaY = scoreRect.top;
+
+
+            return {width: availableWidth, height: availableHeight, scoreArea: {x: scoreAreaX, y: scoreAreaY, w: scoreAreaWidth, h: scoreAreaHeight}};
+        }
+
         function randomPosition() {
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 100);
+            const availableSpace = getAvailableSpace();
+            const maxX = availableSpace.width - dogSize;
+            const maxY = availableSpace.height - dogSize;
+            let x, y;
+
+            do {
+                x = Math.random() * maxX;
+                y = Math.random() * maxY;
+            } while (checkCollision(x, y, availableSpace.scoreArea));
+
             dog.style.left = `${x}px`;
             dog.style.top = `${y}px`;
         }
+
+        //Collision detection function
+        function checkCollision(dogX, dogY, scoreArea){
+            return (dogX + dogSize > scoreArea.x && dogX < scoreArea.x + scoreArea.w &&
+                    dogY + dogSize > scoreArea.y && dogY < scoreArea.y + scoreArea.h);
+        }
+
         dog.addEventListener('click', () => {
             score++;
             scoreDisplay.textContent = `Счет: ${score}`;
             randomPosition();
         });
-        randomPosition(); 
+        dog.onload = randomPosition;
     </script>
     <script>
         let tg = window.Telegram.WebApp; //получаем объект webapp телеграма 
