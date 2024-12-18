@@ -140,6 +140,19 @@
 
     </script>
     <script>
+        function updateUserInfo() {
+            const user = tg.initDataUnsafe?.user || {};
+            const username = user?.first_name || "Пользователь";
+            const avatar = user?.photo_url || "https://via.placeholder.com/40";
+
+            document.getElementById("username").textContent = username;
+            document.getElementById("avatar").src = avatar;
+        }
+
+        Telegram.WebApp.ready(); // Дождитесь полной загрузки WebApp
+        updateUserInfo();
+
+
         let user = {};
 
         const tg = window.Telegram.WebApp;
