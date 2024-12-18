@@ -141,42 +141,55 @@
 
     </script>
     <script>
-        let tg = window.Telegram.WebApp; //получаем объект webapp телеграма 
+        // Инициализация WebApp
+        const tg = window.Telegram.WebApp;
         tg.expand();
 
-        function getUserData() {
-            const t = tg.initDataUnsafe.user.id
-            sendData(t)
+        // Получение данных пользователя
+        const user = tg.initDataUnsafe?.user || {};
+        const avatar = document.getElementById('avatar');
+        const username = document.getElementById('username');
+
+        if (user.id) {
+            console.log("User ID:", user.id);
+            username.textContent = user.first_name || "Пользователь";
+            if (user.photo_url) {
+                avatar.src = user.photo_url;
+            }
+        } else {
+            console.error("Не удалось получить данные пользователя.");
         }
 
+        // Логика отправки данных на сервер
         function sendData(data) {
-            fetch('http://127.0.0.1:5000/send-data', { 
+            fetch('http://127.0.0.1:5000/send-data', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
             })
             .then(response => response.json())
-            .then(data => {
-                if (data.message === "1") {
-                    scoreDisplay.textContent = "Данные успешно обновлены!";    
+            .then(result => {
+                console.log("Результат:", result);
+                if (result.message === "1") {
+                    alert("Данные успешно отправлены!");
                 }
             })
-            .catch((error) => {
-                console.error('Error:', error);
+            .catch(error => {
+                console.error("Ошибка отправки данных:", error);
             });
         }
+
+        // Пример действий при нажатии кнопок
         function button1Click() {
-            const dataToSend = { id: "telegram_id", value: "993" };
-            sendData(dataToSend);
+            sendData({ action: "button1_click", userId: user.id });
         }
+
         function button2Click() {
-            getUserData();
+            sendData({ action: "button2_click", user });
         }
+
         function button3Click() {
-            const dataToSend = { id: "telegram_id", value: 'Кнопка 3 нажата' };
-            sendData(dataToSend);
+            sendData({ action: "button3_click", userId: user.id });
         }
     </script>
 </body>
