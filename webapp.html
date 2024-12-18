@@ -108,7 +108,7 @@
             <button onclick="button3Click()">Кнопка 3</button>
         </div>
     </div>
-
+    
     <script>
         let score = 0;
 
@@ -131,6 +131,28 @@
         randomPosition(); // Устанавливаем начальную позицию
     </script>
 
+    <script>
+        // Function to get user info from the Telegram API
+        function getUserInfo() {
+            const telegramData = new URL(window.location.href).searchParams.get("tgWebAppData");
+            if (telegramData) {
+                try {
+                    // Decode the base64 URL encoded data
+                    const decodedData = JSON.parse(atob(telegramData));
+                    const userId = decodedData.user.id;
+                    scoreDisplay.textContent = `${userId}`;
+                    // Now you can use the userId as needed, e.g. display it or send it to your server
+                } catch (error) {
+                    console.error("Error decoding telegram data:", error);
+                }
+            } else {
+                console.error("No Telegram data found");
+            }
+        }
+
+        window.onload = getUserInfo; // Call the function on window load
+    </script>
+    
     <script>
         function initializeTelegramWebApp() {
             // Проверка наличия объекта WebApp
