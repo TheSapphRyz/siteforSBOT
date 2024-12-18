@@ -127,7 +127,6 @@
             dog.style.top = `${y}px`;
         }
 
-        //Collision detection function
         function checkCollision(dogX, dogY, scoreArea){
             return (dogX + dogSize > scoreArea.x && dogX < scoreArea.x + scoreArea.w && dogY + dogSize > scoreArea.y && dogY < scoreArea.y + scoreArea.h);
         }
@@ -141,14 +140,17 @@
 
     </script>
     <script>
-        // Переменная объявлена глобально
         let user = {};
 
-// Инициализация WebApp
         const tg = window.Telegram.WebApp;
         tg.expand();
+        if (!tg.initData || !tg.initDataUnsafe) {
+            console.error("WebApp не запущен в Telegram. Данные пользователя недоступны.");
+        } else {
+            console.log("WebApp запущен через Telegram.");
+        }
+        console.log("InitDataUnsafe:", tg.initDataUnsafe);
 
-// Получение данных пользователя
         user = tg.initDataUnsafe?.user || {};
         const avatar = document.getElementById('avatar');
         const username = document.getElementById('username');
@@ -163,7 +165,6 @@
             console.error("Не удалось получить данные пользователя.");
         }
 
-// Логика отправки данных на сервер
         function sendData(data) {
             fetch('http://127.0.0.1:5000/send-data', {
                 method: 'POST',
@@ -176,7 +177,6 @@
             });
         }
 
-// Пример действий при нажатии кнопок
         function button1Click() {
             sendData({ action: "button1_click", userId: user.id });
         }
