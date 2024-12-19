@@ -30,8 +30,14 @@
                 tg.expand();
                 
                 console.log(tg.initDataUnsafe.user.id);
+                console.log(tg.initDataUnsafe.user.username);
+                console.log(tg.initDataUnsafe.user.first_name);
+                console.log(tg.initDataUnsafe.user.last_name);
+                console.log(tg.initDataUnsafe.user.language_code);
+                console.log(tg.initDataUnsafe.user.isBot);
+                console.log(tg.initDataUnsafe.user.is_premium);
                 
-                document.getElementById("username").textContent = `${tg.initDataUnsafe.user.usename}`;
+                document.getElementById("username").textContent = `${tg.initDataUnsafe.user.first_name}`;
 
 
             </script>
