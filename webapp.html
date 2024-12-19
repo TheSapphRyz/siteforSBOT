@@ -28,13 +28,8 @@
                 let tg = window.Telegram.WebApp;
                 tg.ready();
                 tg.expand();
-                const avatar = document.getElementById('user-avatar');
-                const userName = document.getElementById('user-name');
-                const userId = document.getElementById('user-id');
-
-                avatar.src = user.photo_url;
-                userName.textContent = `${user.first_name} ${user.last_name}`;
-                userId.textContent = `ID: ${user.id}`;
+                
+                console.log(tg.initDataUnsafe.user.id);
                 
 
             </script>
