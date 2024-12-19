@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Crazy Fly</title>
+    <title>Telegram Mini App</title>
     <style>
         body {
             margin: 0;
@@ -42,8 +42,8 @@
         }
         .content {
             flex-grow: 1;
-            position: relative;
-            overflow: hidden;
+            padding: 20px;
+            overflow-y: auto;
         }
         .footer {
             display: flex;
@@ -76,7 +76,7 @@
             <div class="user-info">
                 <img id="avatar" alt="Avatar">
                 <span id="username">Пользователь</span>
-                <span id="balance">Баланс: 100₽</span>
+                <span id="user-id">ID: -</span>
             </div>
         </div>
         <div class="content">
@@ -91,87 +91,37 @@
     </div>
     <script>
         const tg = window.Telegram.WebApp;
-        let user = {};
-        let score = 0;
 
-        const dog = document.getElementById('dog');
-        const scoreDisplay = document.getElementById('score');
-        const dogSize = 100;
-
-        // Инициализация данных
         window.addEventListener('DOMContentLoaded', () => {
-            tg.ready();
-            user = tg.initDataUnsafe?.user || {};
-            
-            // Установка данных пользователя
-            const avatar = document.getElementById('avatar');
-            const username = document.getElementById('username');
-            
-            if (user.photo_url) {
-                avatar.src = user.photo_url;
-            } else {
-                avatar.src = 'default-avatar.png';
+            if (!tg) {
+                console.error('Telegram WebApp API не доступно.');
+                return;
             }
-            
-            username.textContent = user.first_name 
-                ? `${user.first_name} ${user.last_name || ''}` 
-                : 'Неизвестный пользователь';
-            
-            randomPosition();
+
+            tg.ready();
+
+            const user = tg.initDataUnsafe?.user;
+            if (user) {
+                const avatar = document.getElementById('avatar');
+                const username = document.getElementById('username');
+                const userId = document.getElementById('user-id');
+
+                if (user.photo_url) avatar.src = user.photo_url;
+                username.textContent = `${user.first_name} ${user.last_name || ''}`.trim();
+                userId.textContent = `ID: ${user.id}`;
+            } else {
+                console.warn('Пользовательские данные недоступны.');
+            }
         });
-
-        // Получение доступного пространства
-        function getAvailableSpace() {
-            const headerHeight = document.querySelector('.header').offsetHeight;
-            const footerHeight = document.querySelector('.footer').offsetHeight;
-            const windowHeight = window.innerHeight;
-            const windowWidth = window.innerWidth;
-
-            return {
-                width: windowWidth - dogSize,
-                height: windowHeight - headerHeight - footerHeight - dogSize,
-                offsetX: 0,
-                offsetY: headerHeight
-            };
-        }
-
-        // Перемещение собаки в случайное место
-        function randomPosition() {
-            const space = getAvailableSpace();
-            const x = Math.random() * space.width + space.offsetX;
-            const y = Math.random() * space.height + space.offsetY;
-            dog.style.left = `${x}px`;
-            dog.style.top = `${y}px`;
-        }
-
-        // Увеличение счета
-        dog.addEventListener('click', () => {
-            score++;
-            scoreDisplay.textContent = `Счет: ${score}`;
-            randomPosition();
-        });
-
-        // Функции кнопок
-        function sendData(action) {
-            fetch('http://127.0.0.1:5000/send-data', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action, userId: user.id || null }),
-            })
-            .then(response => response.json())
-            .catch(error => console.error('Ошибка отправки:', error));
-        }
 
         function button1Click() {
-            sendData('button1_click');
+            console.log('Кнопка 1 нажата');
         }
-
         function button2Click() {
-            sendData('button2_click');
+            console.log('Кнопка 2 нажата');
         }
-
         function button3Click() {
-            sendData('button3_click');
+            console.log('Кнопка 3 нажата');
         }
     </script>
 </body>
