@@ -8,11 +8,11 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #2f3136;
-            color: #ffffff;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
+            background-color: #2f3136; /* Темный фон, как в Discord */
+            color: #ffffff; /* Белый текст */
+            width: 100%; /* Полная ширина */
+            height: 100vh; /* Полная высота */
+            overflow: hidden; /* Запретить прокрутку страницы */
         }
         .app-container {
             display: flex;
@@ -24,9 +24,9 @@
             align-items: center;
             justify-content: space-between;
             padding: 10px 20px;
-            background-color: #202225;
-            border-radius: 8px;
-            margin: 10px;
+            background-color: #202225; /* Цвет заголовка */
+            border-radius: 8px; /* Закругление краев заголовка */
+            margin: 10px; /* Отступы */
         }
         .header img {
             border-radius: 50%;
@@ -41,23 +41,23 @@
             margin-left: 10px;
         }
         .content {
-            flex-grow: 1;
+            flex-grow: 1; /* Позволяет контенту занимать оставшееся пространство */
             padding: 20px;
-            overflow-y: auto;
+            overflow-y: auto; /* Включить прокрутку для контента */
         }
         .footer {
             display: flex;
             justify-content: space-around;
             background-color: #202225;
             padding: 10px 0;
-            border-radius: 8px;
-            margin: 10px;
+            border-radius: 8px; /* Закругление краев для подложки кнопок */
+            margin: 10px; /* Отступы */
         }
         .footer button {
-            background-color: #202225;
-            color: #ffffff;
+            background-color: #202225; /* Цвет кнопок */
+            color: #ffffff; /* Цвет текста */
             border: none;
-            border-radius: 5px;
+            border-radius: 5px; /* Закругление краев кнопок */
             padding: 10px 20px;
             cursor: pointer;
             transition: background-color 0.3s;
@@ -68,15 +68,15 @@
             transition: all 0.3s;
         }
     </style>
-    <script async src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script async src="https://telegram.org/js/telegram-web-app.js"></script> <!-- Вставка скрипта Telegram -->
 </head>
 <body>
     <div class="app-container">
         <div class="header">
             <div class="user-info">
-                <img id="avatar" alt="Avatar">
+                <img id="avatar"alt="Avatar">
                 <span id="username">Пользователь</span>
-                <span id="user-id">ID: -</span>
+                <span id="balance">Баланс: 100₽</span>
             </div>
         </div>
         <div class="content">
@@ -91,38 +91,105 @@
     </div>
     <script>
         const tg = window.Telegram.WebApp;
-
+        let user = {}
         window.addEventListener('DOMContentLoaded', () => {
-            if (!tg) {
-                console.error('Telegram WebApp API не доступно.');
-                return;
-            }
-
+            // Ensure the WebApp API is initialized
             tg.ready();
 
-            const user = tg.initData?.user;
+            // Get user data
+            const user = tg.initDataUnsafe?.user;
+
             if (user) {
-                const avatar = document.getElementById('avatar');
-                const username = document.getElementById('username');
+                // Populate user info
+                const avatar = document.getElementById('user-avatar');
+                const userName = document.getElementById('user-name');
                 const userId = document.getElementById('user-id');
 
-                if (user.photo_url) avatar.src = user.photo_url;
-                username.textContent = `${user.first_name} ${user.last_name || ''}`.trim();
+                avatar.src = user.photo_url;
+                userName.textContent = `${user.first_name} ${user.last_name}`;
                 userId.textContent = `ID: ${user.id}`;
             } else {
-                console.warn('Пользовательские данные недоступны.');
+                // If no user data, show defaults
+                document.getElementById('user-info').textContent = 'Unable to load user information.';
             }
         });
 
+        function sendData(data) {
+            fetch('http://127.0.0.1:5000/send-data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .catch(error => {
+                console.error("Ошибка отправки данных:", error);
+            });
+        }
+
         function button1Click() {
-            console.log('Кнопка 1 нажата');
+            tg.sendData({ action: "button1_click", userId: user.id });
+            //window.location.href='page2.html'
         }
+
         function button2Click() {
-            console.log('Кнопка 2 нажата');
-        }
+            tg.sendData({ action: "button2_click", user });
+        }   
+
         function button3Click() {
-            console.log('Кнопка 3 нажата');
+            tg.sendData({ action: "button3_click", userId: user.id });
         }
+
+    </script>
+
+    <script>
+
+        let score = 0;
+        const dog = document.getElementById('dog');
+        const scoreDisplay = document.getElementById('score');
+        const dogSize = 100; // Size of the dog image
+
+        function getAvailableSpace() {
+            const headerRect = document.querySelector('.header').getBoundingClientRect();
+            const footerRect = document.querySelector('.footer').getBoundingClientRect();
+            const scoreRect = document.getElementById('score').getBoundingClientRect();
+            const bodyRect = document.body.getBoundingClientRect();
+            const availableWidth = bodyRect.width;
+            const availableHeight = bodyRect.height - headerRect.height - footerRect.height;
+            const scoreAreaWidth = scoreRect.width + 20; //Add some padding
+            const scoreAreaHeight = scoreRect.height + 20;
+            const scoreAreaX = scoreRect.left;
+            const scoreAreaY = scoreRect.top;
+
+
+            return {width: availableWidth, height: availableHeight, scoreArea: {x: scoreAreaX, y: scoreAreaY, w: scoreAreaWidth, h: scoreAreaHeight}};
+        }
+
+        function randomPosition() {
+            const availableSpace = getAvailableSpace();
+            const maxX = availableSpace.width - dogSize;
+            const maxY = availableSpace.height - dogSize;
+            let x, y;
+
+            do {
+                x = Math.random() * maxX;
+                y = Math.random() * maxY;
+            } while (checkCollision(x, y, availableSpace.scoreArea));
+
+            dog.style.left = `${x}px`;
+            dog.style.top = `${y}px`;
+        }
+
+        function checkCollision(dogX, dogY, scoreArea){
+            return (dogX + dogSize > scoreArea.x && dogX < scoreArea.x + scoreArea.w && dogY + dogSize > scoreArea.y && dogY < scoreArea.y + scoreArea.h);
+        }
+
+        dog.addEventListener('click', () => {
+            score++;
+            scoreDisplay.textContent = `Счет: ${score}`;
+            randomPosition();
+        });
+        dog.onload = randomPosition;
+
     </script>
 </body>
 </html>
