@@ -91,28 +91,22 @@
     </div>
     <script>
         const tg = window.Telegram.WebApp;
-        let user = {}
-        window.addEventListener('DOMContentLoaded', () => {
-            // Ensure the WebApp API is initialized
-            tg.ready();
+        tg.ready();
+        const user = tg.initDataUnsafe.user;
 
-            // Get user data
-            const user = tg.initDataUnsafe.user;
-
-            if (user) {
+        if (user) {
                 // Populate user info
-                const avatar = document.getElementById('user-avatar');
-                const userName = document.getElementById('user-name');
-                const userId = document.getElementById('user-id');
+            const avatar = document.getElementById('user-avatar');
+            const userName = document.getElementById('user-name');
+            const userId = document.getElementById('user-id');
 
-                avatar.src = user.photo_url;
-                userName.textContent = `${user.first_name} ${user.last_name}`;
-                userId.textContent = `ID: ${user.id}`;
-            } else {
+            avatar.src = user.photo_url;
+            userName.textContent = `${user.first_name} ${user.last_name}`;
+            userId.textContent = `ID: ${user.id}`;
+        } else {
                 // If no user data, show defaults
-                document.getElementById('user-info').textContent = 'Unable to load user information.';
-            }
-        });
+            document.getElementById('user-info').textContent = 'Unable to load user information.';
+        }
 
         function sendData(data) {
             fetch('http://127.0.0.1:5000/send-data', {
