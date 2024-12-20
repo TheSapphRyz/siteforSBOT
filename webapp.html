@@ -185,12 +185,12 @@
                 }   
                 return response.json();
             })
-            
+
             .then(responseData => {
                 console.log("Успешный ответ от сервера: ", responseData);
                 if (responseData) {
-                    const d = JSON.parse(responseData); 
-                    console.log(d[2])
+                    //const d = JSON.parse(responseData); 
+                    console.log(responseData[2])
                 }
             })
 
