@@ -92,16 +92,14 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
-        const user = tg.initDataUnsafe.user;
 
-                // Populate user info
         const avatar = document.getElementById('user-avatar');
         const userName = document.getElementById('user-name');
         const userId = document.getElementById('user-id');
 
         avatar.src = tg.initDataUnsafe.user.photo_url;
-        userName.textContent = `${user.first_name} ${user.last_name}`;
-        userId.textContent = `ID: ${user.id}`;
+        userName.textContent = `${tg.initDataUnsafe.user.first_name} ${tg.initDataUnsafe.user.last_name}`;
+        userId.textContent = `ID: ${tg.initDataUnsafe.user.id}`;
 
         function sendData(data) {
             fetch('http://127.0.0.1:5000/send-data', {
@@ -116,16 +114,22 @@
         }
 
         function button1Click() {
-            tg.sendData({ action: "button1_click", userId: user.id });
+            tg.sendData({ action: "button1_click", userId: `${tg.initDataUnsafe.user.id}` });
             //window.location.href='page2.html'
         }
 
         function button2Click() {
-            tg.sendData({ action: "button2_click", user });
+            console.log(tg.initDataUnsafe.user.id);
+            console.log(tg.initDataUnsafe.user.username);
+            console.log(tg.initDataUnsafe.user.first_name);
+            console.log(tg.initDataUnsafe.user.last_name);
+            console.log(tg.initDataUnsafe.user.language_code);
+            console.log(tg.initDataUnsafe.user.is_bot);
+            console.log(tg.initDataUnsafe.user.is_premium);
         }   
 
         function button3Click() {
-            tg.sendData({ action: "button3_click", userId: user.id });
+            tg.sendData({ action: "button3_click", userId: `${tg.initDataUnsafe.user.id}` });
         }
 
     </script>
