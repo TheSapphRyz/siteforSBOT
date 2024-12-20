@@ -28,6 +28,8 @@
             background-color: #202225; /* Цвет заголовка */
             border-radius: 8px; /* Закругление краев заголовка */
             margin: 10px; /* Отступы */
+            flex-direction: column;
+            
         }
         .header img {
             border-radius: 50%;
@@ -76,17 +78,16 @@
             <div class="user-info">
                 <img id="avatar", src="https://icdn.lenta.ru/images/2024/09/01/19/20240901195325800/wide_4_3_9497d74f55abf24c9314c8281b8ac1a3.jpg", alt="Avatar">
                 <span id="username">Пользователь</span>
-                <span id="balance">Баланс: 100₽</span>
             </div>
         </div>
         <div class="content">
-            <div id="score">Счет: 0</div>
+            <div id="score">993 $MYXA</div>
             <img id="dog" src="rb_146107.png" alt="Собака">
         </div>
         <div class="footer">
-            <button onclick="button1Click()">Кнопка 1</button>
-            <button onclick="button2Click()">Кнопка 2</button>
-            <button onclick="button3Click()">Кнопка 3</button>
+            <button onclick="button1Click()">Earn</button>
+            <button onclick="button2Click()">Play</button>
+            <button onclick="button3Click()">Friends</button>
         </div>
     </div>
     <script>
@@ -113,7 +114,7 @@
             document.getElementById("username").textContent = `@${tg.initDataUnsafe.user.username}`;
         }
 
-        let score = 0;
+        let score = 993;
         const dog = document.getElementById('dog');
         const scoreDisplay = document.getElementById('score');
         const dogSize = 100; // Size of the dog image
@@ -155,7 +156,7 @@
 
         dog.addEventListener('click', () => {
             score++;
-            scoreDisplay.textContent = `Счет: ${score}`;
+            scoreDisplay.textContent = `${score} $MYXA`;
             randomPosition();
         });
         dog.onload = randomPosition;
