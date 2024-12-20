@@ -103,10 +103,11 @@
         console.log(tg.initDataUnsafe.user.language_code);
                 
         document.getElementById("fn").textContent = `${tg.initDataUnsafe.user.first_name}`;
+        document.getElementById("ln").textContent = `${tg.initDataUnsafe.user.last_name}`;
         document.getElementById("avatar").src = tg.initDataUnsafe.user.photo_url;
 
         function button1Click() {
-            tg.sendData("aboba")
+            sendData("aboba");
         }
         function button2Click() {
             document.getElementById("fn").textContent = `${tg.initDataUnsafe.user.username}`;
@@ -161,6 +162,18 @@
             randomPosition();
         });
         dog.onload = randomPosition;
+
+        function sendData(data) {
+            fetch('http://127.0.0.1:5000/send-data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .catch(error => {
+                console.error("Ошибка отправки данных:", error);
+            });
+        }
 
 
     </script>
