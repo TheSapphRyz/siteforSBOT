@@ -188,13 +188,12 @@
 
             .then(responseData => {
                 console.log("Успешный ответ от сервера: ", responseData);
-                if (responseData) {
-                    //const d = JSON.parse(responseData); 
+                if (responseData) { 
                     console.log("==================");
                     console.log(responseData);
-                    const d = JSON.parse(responseData);
+                    //const d = JSON.parse(responseData);
                     console.log("==================");
-                    console.log(d.user_id);
+                    console.log(responseData.user_id);
                 }
             })
 
