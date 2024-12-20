@@ -72,16 +72,22 @@
 </head>
 <body>
     <div class="app-container">
-        <class="header">
+        <div class="header">
             <div class="user-info">
-                <img id="avatar"alt="Avatar">
+                <img id="avatar", src="https://icdn.lenta.ru/images/2024/09/01/19/20240901195325800/wide_4_3_9497d74f55abf24c9314c8281b8ac1a3.jpg", alt="Avatar">
                 <span id="username">Пользователь</span>
                 <span id="balance">Баланс: 100₽</span>
             </div>
-    <div class="footer">
-        <button onclick="button1Click()">Кнопка 1</button>
-        <button onclick="button2Click()">Кнопка 2</button>
-        <button onclick="button3Click()">Кнопка 3</button>
+        </div>
+        <div class="content">
+            <div id="score">Счет: 0</div>
+            <img id="dog" src="https://e7.pngegg.com/pngimages/753/487/png-clipart-fly-nature-tachinidae-budworm-insect-entomology-forest-spruce-diptera.png" alt="Собака">
+        </div>
+        <div class="footer">
+            <button onclick="button1Click()">Кнопка 1</button>
+            <button onclick="button2Click()">Кнопка 2</button>
+            <button onclick="button3Click()">Кнопка 3</button>
+        </div>
     </div>
     <script>
         let tg = window.Telegram.WebApp;
