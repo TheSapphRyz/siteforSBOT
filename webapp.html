@@ -9,7 +9,7 @@
             body {
                 margin: 0;
                 font-family: Arial, sans-serif;
-                background-color: var(--tg-theme-bg-color);/*#2f3136; /* Темный фон, как в Discord */
+                background-color: #2f3136; /* Темный фон, как в Discord */
                 color: #ffffff; /* Белый текст */
                 width: 100%; /* Полная ширина */
                 height: 100vh; /* Полная высота */
@@ -63,47 +63,50 @@
                 cursor: pointer;
                 transition: background-color 0.3s;
             }
+            #dog {
+                position: absolute;
+                width: 100px;
+                transition: all 0.3s;
+            }
         </style>
-        <body>
-            <div class="app-container">
-                <class="header">
-                    <div class="user-info">
-                        <img id="avatar"alt="Avatar">
-                        <span id="username">Пользователь</span>
-                        <span id="balance">Баланс: 100₽</span>
-                    </div>
-            <div class="footer">
-                <button onclick="button1Click()">Кнопка 1</button>
-                <button onclick="button2Click()">Кнопка 2</button>
-                <button onclick="button3Click()">Кнопка 3</button>
-            </div>
-            <script>
-                let tg = window.Telegram.WebApp;
-                tg.ready();
-                tg.expand();
-                
-                console.log(tg.initDataUnsafe.user.id);
-                console.log(tg.initDataUnsafe.user.username);
-                console.log(tg.initDataUnsafe.user.first_name);
-                console.log(tg.initDataUnsafe.user.last_name);
-                console.log(tg.initDataUnsafe.user.language_code);
-                console.log(tg.initDataUnsafe.user.is_bot);
-                console.log(tg.initDataUnsafe.user.is_premium);
-                
-                document.getElementById("username").textContent = `${tg.initDataUnsafe.user.first_name}`;
-                document.getElementById("avatar").src = tg.initDataUnsafe.user.photo_url;
-
-                function button1Click() {
-                    document.getElementById("balance").textContent = `@${tg.initDataUnsafe.user.username}`;
-                }
-                function button2Click() {
-                    document.getElementById("username").textContent = `${tg.initDataUnsafe.user.last_name}`;
-                }
-                function button3Click() {
-                    document.getElementById("username").textContent = `@${tg.initDataUnsafe.user.username}`;
-                }
-
-            </script>
-        </body>
     </head>
+    <body>
+        <div class="app-container">
+            <class="header">
+                <div class="user-info">
+                    <img id="avatar"alt="Avatar">
+                    <span id="username">Пользователь</span>
+                    <span id="balance">Баланс: 100₽</span>
+                </div>
+        <div class="footer">
+            <button onclick="button1Click()">Кнопка 1</button>
+            <button onclick="button2Click()">Кнопка 2</button>
+            <button onclick="button3Click()">Кнопка 3</button>
+        </div>
+        <script>
+            let tg = window.Telegram.WebApp;
+            tg.ready();
+            tg.expand();
+                
+            console.log(tg.initDataUnsafe.user.id);
+            console.log(tg.initDataUnsafe.user.username);
+            console.log(tg.initDataUnsafe.user.first_name);
+            console.log(tg.initDataUnsafe.user.last_name);
+            console.log(tg.initDataUnsafe.user.language_code);
+                
+            document.getElementById("username").textContent = `${tg.initDataUnsafe.user.first_name}`;
+            document.getElementById("avatar").src = tg.initDataUnsafe.user.photo_url;
+
+            function button1Click() {
+                document.getElementById("balance").textContent = `@${tg.initDataUnsafe.user.username}`;
+            }
+            function button2Click() {
+                document.getElementById("username").textContent = `${tg.initDataUnsafe.user.last_name}`;
+            }
+            function button3Click() {
+                document.getElementById("username").textContent = `@${tg.initDataUnsafe.user.username}`;
+            }
+
+        </script>
+    </body>
 </html>
