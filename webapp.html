@@ -16,9 +16,9 @@
                 overflow: hidden; /* Запретить прокрутку страницы */
             }
             .app-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
             }
             .header {
                 display: flex;
@@ -94,13 +94,13 @@
                 document.getElementById("avatar").src = tg.initDataUnsafe.user.photo_url;
 
                 function button1Click() {
-                    document.getElementById("balance").textContent = `${tg.initDataUnsafe.user.username}`;
+                    document.getElementById("balance").textContent = `@${tg.initDataUnsafe.user.username}`;
                 }
                 function button2Click() {
                     document.getElementById("username").textContent = `${tg.initDataUnsafe.user.last_name}`;
                 }
                 function button3Click() {
-                    document.getElementById("username").textContent = `${tg.initDataUnsafe.user.username}`;
+                    document.getElementById("username").textContent = `@${tg.initDataUnsafe.user.username}`;
                 }
 
             </script>
