@@ -74,7 +74,7 @@
     <div class="app-container">
         <div class="header">
             <div class="user-info">
-                <img id="avatar"alt="Avatar">
+                <img id="avatar", src="https://icdn.lenta.ru/images/2024/09/01/19/20240901195325800/wide_4_3_9497d74f55abf24c9314c8281b8ac1a3.jpg", alt="Avatar">
                 <span id="username">Пользователь</span>
                 <span id="balance">Баланс: 100₽</span>
             </div>
@@ -92,6 +92,7 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
+        tg.expand();
 
         const avatar = document.getElementById('user-avatar');
         const userName = document.getElementById('user-name');
