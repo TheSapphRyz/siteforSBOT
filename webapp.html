@@ -115,7 +115,7 @@
         document.getElementById("avatar").src = tg.initDataUnsafe.user.photo_url;
 
         function button1Click() {
-            sendData("aboba");
+            sendData(`select ref ${tg.initDataUnsafe.user.id}`);
         }
         function button2Click() {
             document.getElementById("fn").textContent = `${tg.initDataUnsafe.user.username}`;
@@ -177,13 +177,24 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }   
+                return response.json();
+            })
+            .then(responseData => {
+        // Обрабатываем успешный ответ
+                console.log("Успешный ответ от сервера: ", responseData);
+                if (responseData.startsWith(`select ref ${tg.initDataUnsafe.user.id}=`)) {
+                    const c = responseData.split('=')[1];
+                    document.getElementById("ln").textContent = `${c}`;
+                }
+            })
             .catch(error => {
-                console.error("Ошибка отправки данных:", error);
+                console.error("Ошибка отправки данных: ", error);
             });
         }
-
-
     </script>
 </body>
 </html>
