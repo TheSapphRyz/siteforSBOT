@@ -94,19 +94,14 @@
         tg.ready();
         const user = tg.initDataUnsafe.user;
 
-        if (user) {
                 // Populate user info
-            const avatar = document.getElementById('user-avatar');
-            const userName = document.getElementById('user-name');
-            const userId = document.getElementById('user-id');
+        const avatar = document.getElementById('user-avatar');
+        const userName = document.getElementById('user-name');
+        const userId = document.getElementById('user-id');
 
-            avatar.src = user.photo_url;
-            userName.textContent = `${user.first_name} ${user.last_name}`;
-            userId.textContent = `ID: ${user.id}`;
-        } else {
-                // If no user data, show defaults
-            document.getElementById('user-info').textContent = 'Unable to load user information.';
-        }
+        avatar.src = tg.initDataUnsafe.user.photo_url;
+        userName.textContent = `${user.first_name} ${user.last_name}`;
+        userId.textContent = `ID: ${user.id}`;
 
         function sendData(data) {
             fetch('http://127.0.0.1:5000/send-data', {
