@@ -195,16 +195,21 @@
             })
 
             .then(responseData => {
-                if (responseData) { 
-                    console.log("==================");
-                    console.log(responseData);
-                    console.log("==================");
-                    console.log(responseData.user_id);
-                    console.log("==================");
-                    balance = responseData.balance;
-                    friends = responseData.friends;
-                    reflink = responseData.ref;
-                    document.getElementById("test").textContent = `${balance} + ${friends} + ${reflink}`;
+                if (responseData) {
+                    if (responseData.type === "data") {
+                        console.log("==================");
+                        console.log(responseData);
+                        console.log("==================");
+                        console.log(responseData.user_id);
+                        console.log("==================");
+                        balance = responseData.balance;
+                        friends = responseData.friends;
+                        reflink = responseData.ref;
+                        document.getElementById("test").textContent = `${balance} + ${friends} + ${reflink}`;
+                    } else if (responseData.type === "earns") {
+                        console.log(responseData)
+                        
+                    }
                 }
             })
 
