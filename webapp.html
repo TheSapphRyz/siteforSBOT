@@ -123,6 +123,7 @@
         document.getElementById("fn").textContent = first_name;
         document.getElementById("ln").textContent = last_name;
         document.getElementById("avatar").src = tg.initDataUnsafe.user.photo_url;
+        document.getElementById("score").textContent = `${balance} $MYXA`;
 
         function button1Click() {
             sendData(`get_earns=${user_id}`);
@@ -207,8 +208,8 @@
                         reflink = responseData.ref;
                         document.getElementById("test").textContent = `${balance} + ${friends} + ${reflink}`;
                     } else if (responseData.type === "earns") {
-                        console.log(responseData)
-                        
+                        console.log(responseData);
+
                     }
                 }
             })
