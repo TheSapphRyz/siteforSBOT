@@ -125,16 +125,16 @@
         document.getElementById("avatar").src = tg.initDataUnsafe.user.photo_url;
 
         function button1Click() {
-            sendData(`select ref ${tg.initDataUnsafe.user.id}`);
+            sendData(`get_earns=${user_id}`);
         }
         function button2Click() {
-            document.getElementById("fn").textContent = username;
+            sendData(`get_earns=${user_id}`);
         }
         function button3Click() {
-            document.getElementById("ln").textContent = `@${last_name}`;
+            sendData(`get_earns=${user_id}`);
         }
 
-        let score = 993;
+        var score = balance;
         const dog = document.getElementById('dog');
         const scoreDisplay = document.getElementById('score');
         const dogSize = 100; // Size of the dog image
