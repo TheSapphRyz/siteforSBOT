@@ -212,6 +212,8 @@
                         console.log(responseData);
                         document.getElementById("test").textContent = `${responseData.name} ${responseData.subtitle} ${responseData.money} $MYXA`;
 
+                    } else if (responseData.type === "click_MYXA") {
+                        console.log("+MYXA")
                     }
                 }
             })
