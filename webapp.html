@@ -209,6 +209,7 @@
                         document.getElementById("test").textContent = `${balance} + ${friends} + ${reflink}`;
                     } else if (responseData.type === "earns") {
                         console.log(responseData);
+                        document.getElementById("test").textContent = `${responseData.name} ${responseData.subtitle} ${responseData.money} $MYXA`;
 
                     }
                 }
