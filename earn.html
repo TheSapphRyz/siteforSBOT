@@ -180,6 +180,7 @@
 
             .then(responseData => {
                 if (responseData) {
+                    var r = responseData
                     if (responseData.type === "data") {
                         console.log("==================");
                         console.log(responseData);
@@ -206,7 +207,7 @@
                 console.error("Ошибка отправки данных: ", error);
             });
         }
-
+        renderSponsors(r)
         function renderSponsors(data) {
             const sponsorsContainer = document.getElementById('sponsorsContainer');
             sponsorsContainer.innerHTML = ''; // Очищаем контейнер перед добавлением
