@@ -125,13 +125,16 @@
         document.getElementById("avatar").src = tg.initDataUnsafe.user.photo_url;
 
         function button1Click() {
+            window.location.href = "earn.html";
             sendData(`get_earns=${user_id}`);
         }
         function button2Click() {
-            sendData(`get_earns=${user_id}`);
+            sendData(`data_get=${tg.initDataUnsafe.user.id}`);
+            window.location.href = "webapp.html";
         }
         function button3Click() {
-            sendData(`get_earns=${user_id}`);
+            sendData(`data_get=${tg.initDataUnsafe.user.id}`);
+            window.location.href = "refs.html";
         }
 
         var score = balance;
