@@ -35,7 +35,6 @@
             position: fixed; /* Фиксируем в верхней части экрана */
             top: 0; /* Привязываем к верхней границе окна */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Добавляем легкую тень */
-            z-index: 100; /* Гарантируем, что .header будет выше остальных элементов */
         }
         .header img {
             border-radius: 50%;
@@ -169,54 +168,6 @@
             sendData(`data_get=${tg.initDataUnsafe.user.id}`);
             window.location.href = "refs.html";
         }
-
-        var score = balance;
-        const dog = document.getElementById('dog');
-        const scoreDisplay = document.getElementById('score');
-        const dogSize = 100; // Size of the dog image
-
-        function getAvailableSpace() {
-            const headerRect = document.querySelector('.header').getBoundingClientRect();
-            const footerRect = document.querySelector('.footer').getBoundingClientRect();
-            const scoreRect = document.getElementById('score').getBoundingClientRect();
-            const bodyRect = document.body.getBoundingClientRect();
-            const availableWidth = bodyRect.width;
-            const availableHeight = bodyRect.height - headerRect.height - footerRect.height;
-            const scoreAreaWidth = scoreRect.width + 20; //Add some padding
-            const scoreAreaHeight = scoreRect.height + 20;
-            const scoreAreaX = scoreRect.left;
-            const scoreAreaY = scoreRect.top;
-
-
-            return {width: availableWidth, height: availableHeight, scoreArea: {x: scoreAreaX, y: scoreAreaY, w: scoreAreaWidth, h: scoreAreaHeight}};
-        }
-
-        function randomPosition() {
-            const availableSpace = getAvailableSpace();
-            const maxX = availableSpace.width - dogSize;
-            const maxY = availableSpace.height - dogSize;
-            let x, y;
-
-            do {
-                x = Math.random() * maxX;
-                y = Math.random() * maxY;
-            } while (checkCollision(x, y, availableSpace.scoreArea));
-
-            dog.style.left = `${x}px`;
-            dog.style.top = `${y}px`;
-        }
-
-        function checkCollision(dogX, dogY, scoreArea){
-            return (dogX + dogSize > scoreArea.x && dogX < scoreArea.x + scoreArea.w && dogY + dogSize > scoreArea.y && dogY < scoreArea.y + scoreArea.h);
-        }
-
-        dog.addEventListener('click', () => {
-            score = balance++;
-            scoreDisplay.textContent = `${score} $MYXA`;
-            sendData(`+MYXA=${user_id}`)
-            randomPosition();
-        });
-        dog.onload = randomPosition;
 
         function sendData(data) {
             fetch('http://127.0.0.1:5000/send-data', {
