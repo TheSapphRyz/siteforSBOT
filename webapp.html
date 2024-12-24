@@ -219,10 +219,6 @@
                         reflink = responseData.ref;
                         document.getElementById("test").textContent = `${balance} + ${friends} + ${reflink}`;
                         document.getElementById("score").textContent = `${balance} $MYXA`;
-                    } else if (responseData.type === "earns") {
-                        console.log(responseData);
-                        document.getElementById("test").textContent = `${responseData.name} ${responseData.subtitle} ${responseData.money} $MYXA`;
-
                     } else if (responseData.type === "click_MYXA") {
                         console.log("+MYXA");
                     }
