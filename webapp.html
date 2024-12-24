@@ -111,7 +111,6 @@
         console.log(tg.initDataUnsafe.user.last_name);
         console.log(tg.initDataUnsafe.user.language_code);
 
-        sendData(`data_get=${tg.initDataUnsafe.user.id}`);
         const user_id = tg.initDataUnsafe.user.id;
         const username = tg.initDataUnsafe.user.username;
         const first_name = tg.initDataUnsafe.user.first_name;
@@ -119,6 +118,7 @@
         var balance = 0;
         var reflink = "0";
         var friends = 0;
+        sendData(`data_get=${tg.initDataUnsafe.user.id}`);
                         
         document.getElementById("fn").textContent = first_name;
         document.getElementById("ln").textContent = last_name;
@@ -134,7 +134,7 @@
             sendData(`get_earns=${user_id}`);
         }
 
-        var score = 0;
+        var score = balance;
         const dog = document.getElementById('dog');
         const scoreDisplay = document.getElementById('score');
         const dogSize = 100; // Size of the dog image
@@ -213,7 +213,7 @@
                         document.getElementById("test").textContent = `${responseData.name} ${responseData.subtitle} ${responseData.money} $MYXA`;
 
                     } else if (responseData.type === "click_MYXA") {
-                        console.log("+MYXA")
+                        console.log("+MYXA");
                     }
                 }
             })
