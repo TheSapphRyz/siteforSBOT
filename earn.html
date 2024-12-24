@@ -154,7 +154,7 @@
 
         function button1Click() {
             window.location.href = "earn.html";
-            sendData(`get_earns=${user_id}`);
+            sendData(`get_earns`);
         }
         function button2Click() {
             sendData(`data_get=${tg.initDataUnsafe.user.id}`);
@@ -194,6 +194,8 @@
                         console.log(responseData);
                         document.getElementById("test").textContent = "Доступные задания:";
                         renderSponsors(responseData.sponsors);
+                        console.log("earn обработчик")
+
                     } else if (responseData.type === "click_MYXA") {
                         console.log("+MYXA");
                     }
@@ -207,6 +209,7 @@
 
         function renderSponsors(sponsors) {
             const container = document.getElementById("test");
+            console.log("render sponsors работает")
             sponsors.forEach(sponsor => {
             const sponsorCard = `
                 <div style="border: 1px solid #ccc; padding: 10px; margin: 10px; border-radius: 5px;">
