@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Telegram Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: "Roboto", serif;
+            font-style: bold;
+            font-weight: 600;
+            background-color: #2f3136; /* Темный фон, как в Discord */
+            color: #ffffff; /* Белый текст */
+            width: 100%; /* Полная ширина */
+            height: 100vh; /* Полная высота */
+            overflow: hidden; /* Запретить прокрутку страницы */
+        }
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .header {
+            display: flex;
+            align-items: left;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #202225; /* Цвет заголовка */
+            border-radius: 8px; /* Закругление краев заголовка */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Добавляем легкую тень */
+        }
+        .header img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+        }
+        .header .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .header .user-info span {
+            margin-left: 10px;
+        }
+
+        .content {
+            flex-grow: 1; /* Позволяет контенту занимать оставшееся пространство */
+            padding: 20px;
+            overflow-y: auto; /* Включить прокрутку для контента */
+        }
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            background-color: #202225;
+            padding: 10px 0;
+            border-radius: 8px; /* Закругление краев для подложки кнопок */
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Добавляем легкую тень */
+        }
+        .footer button {
+            font-family: "Roboto", serif;
+            font-style: bold;
+            font-weight: 600;
+            background-color: #202225; /* Цвет кнопок */
+            color: #ffffff; /* Цвет текста */
+            border: none;
+            border-radius: 5px; /* Закругление краев кнопок */
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #dog {
+            position: absolute;
+            width: 100px;
+            transition: all 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <div class="user-info">
+                <img id="avatar", src="https://icdn.lenta.ru/images/2024/09/01/19/20240901195325800/wide_4_3_9497d74f55abf24c9314c8281b8ac1a3.jpg", alt="Avatar">
+                <span id="fn">Пользователь</span>
+                <span id="ln">Пользователь</span>
+            </div>
+        </div>
+        <div class="content">
+            <div id="score">993Ѯ</div>
+            <img id="dog" src="rb_146107.png" alt="Собака">
+        </div>
+        <div id="test">тут данные</div>
+        <div class="footer">
+            <button onclick="button1Click()">Earn</button>
+            <button onclick="button2Click()">Play</button>
+            <button onclick="button3Click()">Friends</button>
+        </div>
+    </div>
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+                
+        console.log(tg.initDataUnsafe.user.id);
+        console.log(tg.initDataUnsafe.user.username);
+        console.log(tg.initDataUnsafe.user.first_name);
+        console.log(tg.initDataUnsafe.user.last_name);
+        console.log(tg.initDataUnsafe.user.language_code);
+
+        const user_id = tg.initDataUnsafe.user.id;
+        const username = tg.initDataUnsafe.user.username;
+        const first_name = tg.initDataUnsafe.user.first_name;
+        const last_name = tg.initDataUnsafe.user.last_name;
+        var balance = 0;
+        var reflink = "0";
+        var friends = 0;
+        sendData(`data_get=${tg.initDataUnsafe.user.id}`);
+                        
+        document.getElementById("fn").textContent = first_name;
+        document.getElementById("ln").textContent = last_name;
+        document.getElementById("avatar").src = tg.initDataUnsafe.user.photo_url;
+
+        function button1Click() {
+            window.location.href = "earn.html";
+            sendData(`get_earns=${user_id}`);
+        }
+        function button2Click() {
+            sendData(`data_get=${tg.initDataUnsafe.user.id}`);
+            window.location.href = "webapp.html";
+        }
+        function button3Click() {
+            sendData(`data_get=${tg.initDataUnsafe.user.id}`);
+            window.location.href = "refs.html";
+        }
+
+        var score = balance;
+        const dog = document.getElementById('dog');
+        const scoreDisplay = document.getElementById('score');
+        const dogSize = 100; // Size of the dog image
+
+        function getAvailableSpace() {
+            const headerRect = document.querySelector('.header').getBoundingClientRect();
+            const footerRect = document.querySelector('.footer').getBoundingClientRect();
+            const scoreRect = document.getElementById('score').getBoundingClientRect();
+            const bodyRect = document.body.getBoundingClientRect();
+            const availableWidth = bodyRect.width;
+            const availableHeight = bodyRect.height - headerRect.height - footerRect.height;
+            const scoreAreaWidth = scoreRect.width + 20; //Add some padding
+            const scoreAreaHeight = scoreRect.height + 20;
+            const scoreAreaX = scoreRect.left;
+            const scoreAreaY = scoreRect.top;
+
+
+            return {width: availableWidth, height: availableHeight, scoreArea: {x: scoreAreaX, y: scoreAreaY, w: scoreAreaWidth, h: scoreAreaHeight}};
+        }
+
+        function randomPosition() {
+            const availableSpace = getAvailableSpace();
+            const maxX = availableSpace.width - dogSize;
+            const maxY = availableSpace.height - dogSize;
+            let x, y;
+
+            do {
+                x = Math.random() * maxX;
+                y = Math.random() * maxY;
+            } while (checkCollision(x, y, availableSpace.scoreArea));
+
+            dog.style.left = `${x}px`;
+            dog.style.top = `${y}px`;
+        }
+
+        function checkCollision(dogX, dogY, scoreArea){
+            return (dogX + dogSize > scoreArea.x && dogX < scoreArea.x + scoreArea.w && dogY + dogSize > scoreArea.y && dogY < scoreArea.y + scoreArea.h);
+        }
+
+        dog.addEventListener('click', () => {
+            score = balance++;
+            scoreDisplay.textContent = `${score}Ѯ`;
+            sendData(`+coin=${user_id}`)
+            randomPosition();
+        });
+        dog.onload = randomPosition;
+
+        function sendData(data) {
+            fetch('http://127.0.0.1:5000/send-data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }   
+                return response.json();
+            })
+
+            .then(responseData => {
+                if (responseData) {
+                    if (responseData.type === "coins") {
+                        console.log("==================");
+                        console.log(responseData);
+                        console.log("==================");
+                        console.log(responseData.coins);
+                        console.log("==================");
+                        document.getElementById("score").textContent = `${responseData.coins}Ѯ`;
+
+                    } else if (responseData.type === "click_MYXA") {
+                        console.log("+MYXA");
+                    }
+                }
+            })
+
+            .catch(error => {
+                console.error("Ошибка отправки данных: ", error);
+            });
+        }
+    </script>
+</body>
+</html>
