@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Правила группы</title>
+  <style>
+    :root {
+      --bg-color: #36393f;
+      --channel-color: #2f3136;
+      --message-color: #40444b;
+      --text-color: #dcddde;
+      --text-muted: #a3a6aa;
+      --accent: #5865f2;
+      --hover: #3a3c43;
+      --border: #4f545c;
+    }
+    body {
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    .rules-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .rule {
+      background: var(--channel-color);
+      border-radius: 8px;
+      padding: 0;
+      margin-bottom: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .rule-header {
+      background: var(--channel-color);
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+    }
+    .rule-header:hover {
+      background: var(--hover);
+    }
+    .rule-number {
+      font-weight: bold;
+      color: var(--accent);
+      margin-right: 8px;
+    }
+    .rule-title {
+      flex: 1;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+    .rule-arrow {
+      color: var(--text-muted);
+      transition: transform 0.2s;
+    }
+    .rule-content {
+      background: var(--message-color);
+      padding: 0 16px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease-out;
+    }
+    .rule-content-inner {
+      padding: 16px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="rules-container">
+    <h1 style="color: var(--accent);">Правила группы</h1>
+    <div class="rule">
+      <div class="rule-header">
+        <span class="rule-number">1</span>
+        <span class="rule-title">Без фембоев, тянок и в целом меньше аниме</span>
+        <span class="rule-arrow">▼</span>
+      </div>
+      <div class="rule-content">
+        <div class="rule-content-inner">
+          В группе не приветствуется публикация контента с фембоями, тянками и аниме-тематикой. Старайтесь делать посты без аниме-элементов.
+        </div>
+      </div>
+    </div>
+    <div class="rule">
+      <div class="rule-header">
+        <span class="rule-number">2</span>
+        <span class="rule-title">Никаких ремиксов, мешапов, переозвучек, рятп'ов и другого не оригинального контента о Смешариках</span>
+        <span class="rule-arrow">▼</span>
+      </div>
+      <div class="rule-content">
+        <div class="rule-content-inner">
+          Запрещены ремиксы, мешапы, переозвучки, рятп'ы и другой не оригинальный контент, связанный со Смешариками.<br>
+          <strong>Исключения:</strong> не оригинальные постеры, картинки, гифки, видео со Смешариками без 18+,21+ контента на/в них.
+        </div>
+      </div>
+    </div>
+    <div class="rule">
+      <div class="rule-header">
+        <span class="rule-number">3</span>
+        <span class="rule-title">Без спама любого контента</span>
+        <span class="rule-arrow">▼</span>
+      </div>
+      <div class="rule-content">
+        <div class="rule-content-inner">
+          Запрещён спам любого контента. Более 24 медиафайлов в минуту — считается спамом.
+        </div>
+      </div>
+    </div>
+    <div class="rule">
+      <div class="rule-header">
+        <span class="rule-number">4</span>
+        <span class="rule-title">Без шуток с черным юмором и слов с негативным отношением к маме/бабушке</span>
+        <span class="rule-arrow">▼</span>
+      </div>
+      <div class="rule-content">
+        <div class="rule-content-inner">
+          Запрещены шутки, анекдоты с черным юмором и слова, содержащие негативное отношение к маме/мамам и/или бабушке/бабушкам.<br>
+          <strong>Исключения:</strong> все родственники вкубийцев и читеров.
+        </div>
+      </div>
+    </div>
+    <div class="rule">
+      <div class="rule-header">
+        <span class="rule-number">5</span>
+        <span class="rule-title">Осуждение, черный юмор, призывы к убийству, исторические факты про евреев (1939-н.в.) — запрещены</span>
+        <span class="rule-arrow">▼</span>
+      </div>
+      <div class="rule-content">
+        <div class="rule-content-inner">
+          Осуждение и/или фразы с черным юмором и/или призывами к убийству и/или исторические факты с 1939 года по настоящее время про евреев ЗАПРЕЩЕНЫ.
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.querySelectorAll('.rule-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const rule = header.parentElement;
+        const content = rule.querySelector('.rule-content');
+        const arrow = rule.querySelector('.rule-arrow');
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+          arrow.textContent = '▼';
+        } else {
+          content.style.maxHeight = content.scrollHeight + 'px';
+          arrow.textContent = '▲';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
