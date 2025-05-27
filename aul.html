@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Правила группы</title>
   <style>
     :root {
@@ -13,29 +14,36 @@
       --accent: #5865f2;
       --hover: #3a3c43;
       --border: #4f545c;
+      --base-font-size: 16px;
     }
     body {
       background: var(--bg-color);
       color: var(--text-color);
       font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
       margin: 0;
-      padding: 20px;
+      padding: 1.25rem;
+      font-size: var(--base-font-size);
+      min-height: 100vh;
+      box-sizing: border-box;
     }
     .rules-container {
       max-width: 800px;
       margin: 0 auto;
+      width: 100%;
+      padding: 0 1rem;
+      box-sizing: border-box;
     }
     .rule {
       background: var(--channel-color);
       border-radius: 12px;
       padding: 0;
-      margin-bottom: 8px;
+      margin-bottom: 0.5rem;
       overflow: hidden;
       border: 1px solid var(--border);
     }
     .rule-header {
       background: var(--channel-color);
-      padding: 16px;
+      padding: 1rem;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
@@ -48,7 +56,8 @@
     .rule-number {
       font-weight: bold;
       color: var(--accent);
-      margin-right: 8px;
+      margin-right: 0.5rem;
+      min-width: 1.5rem;
     }
     .rule-title {
       flex: 1;
@@ -61,19 +70,60 @@
     }
     .rule-content {
       background: var(--message-color);
-      padding: 0 16px;
+      padding: 0 1rem;
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.2s ease-out;
     }
     .rule-content-inner {
-      padding: 16px 0;
+      padding: 1rem 0;
+    }
+    h1 {
+      color: var(--text-color);
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    /* Медиазапросы для мобильных устройств */
+    @media (max-width: 768px) {
+      :root {
+        --base-font-size: 14px;
+      }
+      body {
+        padding: 0.5rem;
+      }
+      .rules-container {
+        padding: 0 0.5rem;
+      }
+      .rule-header {
+        padding: 0.75rem;
+      }
+      .rule-content-inner {
+        padding: 0.75rem 0;
+      }
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+    }
+    @media (max-width: 480px) {
+      :root {
+        --base-font-size: 13px;
+      }
+      .rule-header {
+        flex-wrap: wrap;
+      }
+      .rule-title {
+        min-width: 80%;
+        margin-top: 0.25rem;
+      }
     }
   </style>
 </head>
 <body>
   <div class="rules-container">
-    <h1 style="color: var(--text-color);"><b>ᚢᚹᚤᛒᛋᚳᚤ ᛚᚹᚴᚢᚢⰓᛁ</b></h1>
+    <h1><b>ᚢᚹᚤᛒᛋᚳᚤ ᛚᚹᚴᚢᚢⰓᛁ</b></h1>
     <div class="rule">
       <div class="rule-header">
         <span class="rule-number">1</span>
