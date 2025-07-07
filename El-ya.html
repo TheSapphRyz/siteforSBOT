@@ -110,7 +110,7 @@
     <div class="container">
         <h2 id="reklama">Здесь могла быть ваша реклама</h1>
         
-        <button class="r" id="r-btn">Заказать</button>
+        <button class="btn" id="r-btn">Заказать</button>
     </div>
 
     <div class="container">
@@ -278,7 +278,7 @@
             const randomElya = elias[Math.floor(Math.random() * elias.length)];
 
 document.getElementById('r-btn').addEventListener('click', function() {
-            window.open("https://t.me/zipcord_chat")
+            window.open("https://t.me/zipcord_chat", "_blank");
             
             document.getElementById('question').style.display = 'none';
             document.getElementById('result').style.display = 'block';
