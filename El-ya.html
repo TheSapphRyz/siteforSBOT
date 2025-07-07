@@ -108,6 +108,12 @@
 </head>
 <body>
     <div class="container">
+        <h2 id="reklama">Здесь могла быть ваша реклама</h1>
+        
+        <button class="r" id="r-btn">Заказать</button>
+    </div>
+
+    <div class="container">
         <h1 id="question">Какой ты Элья сегодня?</h1>
         <div class="result" id="result">
             <div class="result-name" id="result-name"></div>
@@ -270,6 +276,9 @@
 
         document.getElementById('generate-btn').addEventListener('click', function() {
             const randomElya = elias[Math.floor(Math.random() * elias.length)];
+
+document.getElementById('r-btn').addEventListener('click', function() {
+            window.open("https://t.me/zipcord_chat")
             
             document.getElementById('question').style.display = 'none';
             document.getElementById('result').style.display = 'block';
