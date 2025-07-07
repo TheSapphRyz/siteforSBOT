@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Какой ты Элья сегодня?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --discord-dark: #36393f;
+            --discord-darker: #2f3136;
+            --discord-darkest: #202225;
+            --discord-light: #dcddde;
+            --discord-lighter: #ffffff;
+            --discord-accent: #5865f2;
+            --discord-green: #3ba55c;
+            --discord-red: #ed4245;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: var(--discord-dark);
+            color: var(--discord-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            background-color: var(--discord-darker);
+            border-radius: 8px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .datetime {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--discord-lighter);
+        }
+
+        h1 {
+            color: var(--discord-lighter);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .btn {
+            background-color: var(--discord-accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background-color: #4752c4;
+        }
+
+        .btn:disabled {
+            background-color: var(--discord-darkest);
+            cursor: not-allowed;
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--discord-darkest);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result-name {
+            font-size: 1.5rem;
+            color: var(--discord-green);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .result-desc {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .spinner {
+            display: none;
+            margin: 30px auto;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--discord-accent);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        .scrolling-names {
+            height: 60px;
+            overflow: hidden;
+            position: relative;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .name-list {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            transition: transform 0.1s;
+        }
+
+        .name-item {
+            padding: 10px;
+            font-size: 1.3rem;
+            color: var(--discord-accent);
+            font-weight: 700;
+        }
+
+        .limit-message {
+            color: var(--discord-red);
+            margin-top: 20px;
+            font-weight: 500;
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="datetime" id="datetime"></div>
+        <h1>Узнать какой ты Элья сегодня</h1>
+        
+        <button class="btn" id="startBtn">Узнать</button>
+        <div class="limit-message" id="limitMessage">Вы уже узнали своего Элю сегодня. Попробуйте завтра!</div>
+        
+        <div class="scrolling-names" id="scrollingNames">
+            <div class="name-list" id="nameList"></div>
+        </div>
+        
+        <div class="spinner" id="spinner"></div>
+        
+        <div class="result-container" id="resultContainer">
+            <div class="result-name" id="resultName"></div>
+            <div class="result-desc" id="resultDesc"></div>
+        </div>
+    </div>
+
+    <script>
+        // Словарь Эльев
+        const elias = [
+            {
+                name: "Саливой Эван
+                description: "Сегодня ты самый боевой и самый поющий Эван. Куда бы ты не пошел - включай музыку и пой!"
+            },
+            {
+                name: "Олмазнэг Элья"
+                description: "Ты - самый настойчивый и сильный, если видишь нефора - избей!"
+            },
+            {
+                name: "Намазнэг Элья"
+                description: "Ты - мусульман, если нужен повод выйти - он есть! НАМАЗ!"
+            },
+            {
+                name: "Спидознэг Элья
+                description: "Еби всех, знакомься с самыми отвратительными людьми, ведь ты спидозный и им будет хуже"
+            },
+            {
+                name: "Сосальщэг Элья"
+                description: "Сейгдня ты обязан поработать на трассе. Будь то дорога из Вольска в Особняк или М2 в Орел"
+            },
+            {
+                name: "Писюнчэг Элья"
+                description: "Если хотел увеличить свой член - этот день настал. Сегодня он вырастет сам или можешь обратиться к нам на бусти"
+            },
+            {
+                name: "Минетчэг Элья"
+                description: "Сегодня ты работаешь не на трассе, а везде! Каждый сантиметр мира должен слышать твои глоп-глоп, весь мир должен быть в сперме от тебя!"
+            },
+            {
+                name: "Фимознэг Элья"
+                description: "Сегодня ты можешь использовать свою версию сервского кармана - фимоз! Растяни и покажи трюки с ним всем девушкам!"
+            },
+            {
+                name: "Читачэг Элья"
+                description: "Сегодня ты можешь спокойно использовать читы и играть на бэдварсе! Тебя будут только любить и ублажать отчимы"
+            },
+            {
+                name: "Фембойчэг Элья"
+                description: "Сегодня ты настолько конченый, что оденешь женское и начнешь соблазнять парней!"
+            },
+            {
+                name: "Эгорчэг Элья"
+                description: "Сегодня ты задрот, фурриеб, фембой и даун, который покупает фурри игры в стим! Сделай свою жизнь хуже!"
+            },
+            {
+                name: "Журбанчэ Элья"
+                description: "Сегодня ты жирбный еблан, который вместо покупки нормальных товаров ебется с сестрой за 69р!"
+            },
+            {
+                name: "Пулеметчэг Элья"
+                description: "Скорее заходи в TF2, сегодня ты - лучший хевик! Еще не скачал TF2? - Пиздуй на ОГЭ, сосунок!"
+            },
+            {
+                name: "Раздатчэг Элья"
+                description: "Раздачи на спавне, диспенсеры - все это повышает твою самооценку и ЧСВ сегодня, не упусти шанс стать Жирбаным!"
+            },
+            {
+                name: "Железнэг Элья"
+                description: "Ты - самый обычный человек, который боится олмазнэгов, не упусти шанс, стань натуралом, уже завтра тебя будут пиздить ногами и хуями!"
+            },
+            {
+                name: "Автокликерщэг Элья"
+                description: "Хомяк, x.mcsuper.minet и лапанье вумен - сегодня все это ты делаешь с эфективностью V!"
+            },
+            {
+                name: "Противнэг Элья"
+                description: "Автокликерщег, олмазнэг, гондон безмамный или даунист, афкакер - все это про тебя сегодня!"
+            },
+            {
+                name: "Рыболовнэг Элья"
+                description: "Сегодня ты мастерски обращаешься с удочками, приветствуешь Бориса И и не отвечаешь на сообщения, ведь ты - Леха!"
+            },
+            {
+                name: "Свингерчэг Элья"
+                description: "Сегодня ты променяешь нашу гейскую филосовскую жизнь на баб и маму жирбана!"
+            },
+            {
+                name: "Фурриебчэг Элья"
+                description: "Сегодня ты гей, педофил, пиндос и фурриеб, не забывай, твое новое имя - Егока!"
+            },
+            {
+                name: "Хуязнэг Элья"
+                description: "Прилипай ко всем на улице своими потными яйцами и маленьким хуем, буть босинном!"
+            },
+            {
+                name: "Зелянчэг Элья"
+                description: "Привет папищики, машину, которая везла мне кокс, перехватили ебланы с теробороны, мне еще привезут, СЛАВА РОССИИ!"
+            },
+            {
+                name: "Потужнэг Элья"
+                description: "вмикаю потужність на 1488%, сегодня будь самым сильным слабаком среди хохлов, не забывай, в тебя кидаются говном на улице!"
+            },
+            {
+                name: "Покакальщэг Элья"
+                description: "Если пойдешь в туалет - запасайся всем необходимым для выживания на неделю. Если у тебя понос - всему туалету пизда!"
+            },
+            {
+                name: "Впопепальчэг Элья"
+                description: "stick your finger in my ass - that turns me on"
+            },
+            {
+                name: "Коммунизчэг Элья"
+                description: "Пизди все, говори, что это общее. Агитируй узбеков на строительство хаты тебе, ведь работаем на благо общества!"
+            },
+            {
+                name: "Узбэчэг Элья"
+                description: "Самый работящий, но ленивый узбек. Сделает все, но хуево и не сразу, боится Добрыни Скинхедовича!"
+            },
+            {
+                name: "Еврейчэг Элья"
+                description: "Чужого нам не надо, но своё мы возьмём, чьим бы оно ни было!"
+            },
+            {
+                name: "Халяльнэг Элья"
+                description: "Покупай тонны свинины, все в твоих руках - халяль!"
+            },
+            {
+                name: "Дрочильнэг Элья"
+                description: "Правила для сёгм: "
+            },
+            {
+                name: "Харамнэг Элья"
+                description: "Аллах тебя не одобряет, будеш колом для казни, повидаешь столько анусов"
+            },
+            {
+                name: "Шаурмечнэг Элья"
+                description: "Попроси шавуху - она будет бесплатной, захочешь еще - через 10 секунд она у тебя в руках!"
+            },
+            {
+                name: "Агузчэг Элья"
+                description: "Мы все хотим казаться сильными… Мы всю жизнь ищем человека, которому не страшно будет признаться в своих слабостях."
+            },
+            {
+                name: "Задротчэг Элья"
+                description: "Играй весь день, раком, 69 с компом, катки выигрываются сами по себе!"
+            },
+            {
+                name: "Негроебальщэг Элья"
+                description: "Видишь черного - шахидайся на него, пусть пожует говна и попьет воду из кончи!"
+            },
+            {
+                name: "Питончэг Элья"
+                description: "Захотел говна - пиши на пайтон, захотел имбы - пиши на пайтон, захотел пойти на хуй - пиши на пайтон!"
+            },
+            {
+                name: "Скуфчэг Элья"
+                description: "Как это у тебя не танков?! Скачивай, покупай пиво и фембоя!"
+            }
+        ];
+
+        // Обновление даты и времени
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('datetime').textContent = now.toLocaleDateString('ru-RU', options);
+        }
+
+        // Проверка, использовали ли сегодня
+        function checkDailyLimit() {
+            const lastUsedDate = localStorage.getItem('lastUsedDate');
+            const today = new Date().toDateString();
+            
+            if (lastUsedDate === today) {
+                return true; // Лимит исчерпан
+            }
+            return false; // Можно использовать
+        }
+
+        // Сохраняем дату использования
+        function setUsedToday() {
+            const today = new Date().toDateString();
+            localStorage.setItem('lastUsedDate', today);
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            const startBtn = document.getElementById('startBtn');
+            const limitMessage = document.getElementById('limitMessage');
+            const scrollingNames = document.getElementById('scrollingNames');
+            const nameList = document.getElementById('nameList');
+            const spinner = document.getElementById('spinner');
+            const resultContainer = document.getElementById('resultContainer');
+            const resultName = document.getElementById('resultName');
+            const resultDesc = document.getElementById('resultDesc');
+            
+            // Проверяем лимит при загрузке
+            if (checkDailyLimit()) {
+                startBtn.disabled = true;
+                limitMessage.style.display = 'block';
+            }
+            
+            // Заполняем список имен
+            elias.forEach(el => {
+                const div = document.createElement('div');
+                div.className = 'name-item';
+                div.textContent = el.name;
+                nameList.appendChild(div);
+            });
+            
+            // Клонируем элементы для бесконечной прокрутки
+            const clone = nameList.cloneNode(true);
+            nameList.appendChild(clone);
+            
+            startBtn.addEventListener('click', () => {
+                if (checkDailyLimit()) {
+                    limitMessage.style.display = 'block';
+                    return;
+                }
+                
+                setUsedToday(); // Сохраняем факт использования
+                startBtn.disabled = true;
+                limitMessage.style.display = 'block';
+                scrollingNames.style.display = 'block';
+                spinner.style.display = 'block';
+                resultContainer.style.display = 'none';
+                
+                let scrollPosition = 0;
+                const scrollSpeed = 2;
+                let scrollInterval;
+                let slowdownStarted = false;
+                let stopTime = Date.now() + 5000; // 5 секунд прокрутки
+                
+                const scroll = () => {
+                    const now = Date.now();
+                    const timeLeft = stopTime - now;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(scrollInterval);
+                        finishSelection();
+                        return;
+                    }
+                    
+                    // Замедление в последние 500мс
+                    if (timeLeft < 500 && !slowdownStarted) {
+                        slowdownStarted = true;
+                        clearInterval(scrollInterval);
+                        scrollInterval = setInterval(scroll, 30);
+                    }
+                    
+                    scrollPosition += scrollSpeed;
+                    if (scrollPosition >= nameList.scrollHeight / 2) {
+                        scrollPosition = 0;
+                    }
+                    nameList.style.transform = `translateY(-${scrollPosition}px)`;
+                };
+                
+                scrollInterval = setInterval(scroll, 10);
+                
+                const finishSelection = () => {
+                    spinner.style.display = 'none';
+                    scrollingNames.style.display = 'none';
+                    
+                    // Выбираем случайного Элю
+                    const randomIndex = Math.floor(Math.random() * elias.length);
+                    const selectedEl = elias[randomIndex];
+                    
+                    resultName.textContent = selectedEl.name;
+                    resultDesc.textContent = selectedEl.description;
+                    resultContainer.style.display = 'block';
+                };
+            });
+        });
+    </script>
+</body>
+</html>
