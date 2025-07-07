@@ -319,6 +319,7 @@
             }
         ];
 
+
         // Обновление даты и времени
         function updateDateTime() {
             const now = new Date();
@@ -365,12 +366,6 @@
             const resultName = document.getElementById('resultName');
             const resultDesc = document.getElementById('resultDesc');
             
-            // Проверяем лимит при загрузке
-            if (checkDailyLimit()) {
-                startBtn.disabled = true;
-                limitMessage.style.display = 'block';
-            }
-            
             // Заполняем список имен
             elias.forEach(el => {
                 const div = document.createElement('div');
@@ -383,15 +378,26 @@
             const clone = nameList.cloneNode(true);
             nameList.appendChild(clone);
             
+            // Проверяем лимит при загрузке
+            if (checkDailyLimit()) {
+                startBtn.disabled = true;
+                limitMessage.style.display = 'block';
+            } else {
+                startBtn.disabled = false;
+                limitMessage.style.display = 'none';
+            }
+            
             startBtn.addEventListener('click', () => {
                 if (checkDailyLimit()) {
                     limitMessage.style.display = 'block';
                     return;
                 }
                 
-                setUsedToday(); // Сохраняем факт использования
+                // Блокируем кнопку
                 startBtn.disabled = true;
                 limitMessage.style.display = 'block';
+                
+                // Показываем анимацию
                 scrollingNames.style.display = 'block';
                 spinner.style.display = 'block';
                 resultContainer.style.display = 'none';
@@ -429,6 +435,7 @@
                 scrollInterval = setInterval(scroll, 10);
                 
                 const finishSelection = () => {
+                    clearInterval(scrollInterval);
                     spinner.style.display = 'none';
                     scrollingNames.style.display = 'none';
                     
@@ -439,6 +446,9 @@
                     resultName.textContent = selectedEl.name;
                     resultDesc.textContent = selectedEl.description;
                     resultContainer.style.display = 'block';
+                    
+                    // Сохраняем факт использования
+                    setUsedToday();
                 };
             });
         });
