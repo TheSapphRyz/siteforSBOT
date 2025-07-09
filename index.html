@@ -1,50 +1,977 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основные положения Sbot</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Онлайн Монополия</title>
+    <style>
+        :root {
+            --discord-blue: #5865f2;
+            --discord-blue-hover: #4752c4;
+            --discord-dark: #2f3136;
+            --discord-darker: #202225;
+            --discord-gray: #36393f;
+            --discord-light-gray: #40444b;
+            --discord-text: #dcddde;
+            --discord-green: #3ba55c;
+            --discord-orange: #faa61a;
+            --discord-red: #ed4245;
+            --discord-bank: #9b59b6;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--discord-gray);
+            color: var(--discord-text);
+            margin: 0;
+            padding: 10px;
+            font-size: 16px;
+            line-height: 1.5;
+            touch-action: manipulation;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+        
+        h1, h2, h3 {
+            color: white;
+            margin-top: 0;
+        }
+        
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .section {
+            background-color: var(--discord-dark);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        button {
+            background-color: var(--discord-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+            width: 100%;
+            margin: 5px 0;
+        }
+        
+        button:hover {
+            background-color: var(--discord-blue-hover);
+        }
+        
+        button:disabled {
+            background-color: var(--discord-light-gray);
+            cursor: not-allowed;
+        }
+        
+        .btn-reset {
+            background-color: var(--discord-red);
+        }
+        
+        .btn-reset:hover {
+            background-color: #d13235;
+        }
+        
+        .btn-property {
+            background-color: var(--discord-bank);
+        }
+        
+        .btn-property:hover {
+            background-color: #8e44ad;
+        }
+        
+        input, select {
+            background-color: var(--discord-light-gray);
+            border: 1px solid var(--discord-darker);
+            border-radius: 4px;
+            padding: 12px;
+            color: var(--discord-text);
+            margin: 5px 0;
+            width: 100%;
+            font-size: 16px;
+        }
+        
+        .card-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .card-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .card-input input {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .player-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        @media (min-width: 600px) {
+            .player-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 900px) {
+            .player-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        .player-card {
+            background-color: var(--discord-light-gray);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s;
+        }
+        
+        .player-card.active {
+            background-color: var(--discord-blue);
+        }
+        
+        .player-card.inactive {
+            opacity: 0.7;
+        }
+        
+        .player-card.bank {
+            background-color: var(--discord-bank);
+        }
+        
+        .player-info {
+            margin-bottom: 5px;
+        }
+        
+        .player-name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .player-name.bank {
+            font-weight: 800;
+            font-size: 18px;
+        }
+        
+        .player-balance {
+            color: var(--discord-green);
+        }
+        
+        .player-cards-count {
+            color: var(--discord-orange);
+        }
+        
+        .dice-result {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        @media (min-width: 500px) {
+            .action-buttons {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .action-buttons button {
+                width: auto;
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+        
+        .log {
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: var(--discord-dark);
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        .log-entry {
+            margin-bottom: 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--discord-light-gray);
+            word-break: break-word;
+        }
+        
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        
+        /* Модальное окно */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(100% - 40px);
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 100;
+            background-color: var(--discord-dark);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 99;
+        }
+        
+        /* Кнопки в модальном окне */
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .modal-buttons button {
+            flex: 1;
+            margin: 0;
+        }
+        
+        /* Улучшения для мобильных устройств */
+        @media (max-width: 400px) {
+            body {
+                font-size: 14px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            h2 {
+                font-size: 18px;
+            }
+            
+            button, input, select {
+                padding: 10px;
+            }
+        }
+        
+        .bottom-actions {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1><b>Основные положения Sbot</b></h1>
-  </header>
-  
-  <main>
-    <section class="rules">
-      <h2>Правила</h2>
-      <ul>
-        <li>✅Разрешено использовать бота только для личного некоммерческого использования</li>
+    <div class="container">
+        <h1>Антиортем для монополии</h1>
+        
+        <!-- Настройка игры -->
+        <div id="setup-section" class="section">
+            <h2>Настройка игры</h2>
+            
+            <div id="money-setup">
+                <h3>Денежные карты</h3>
+                <p>Введите номиналы и количество денежных карт для казны:</p>
+                
+                <div id="card-inputs-container" class="card-inputs">
+                    <div class="card-input">
+                        <input type="number" class="card-value" placeholder="Номинал" min="1" required value="500">
+                        <input type="number" class="card-quantity" placeholder="Количество" min="1" required value="20">
+                    </div>
+                    <div class="card-input">
+                        <input type="number" class="card-value" placeholder="Номинал" min="1" required value="100">
+                        <input type="number" class="card-quantity" placeholder="Количество" min="1" required value="30">
+                    </div>
+                    <div class="card-input">
+                        <input type="number" class="card-value" placeholder="Номинал" min="1" required value="50">
+                        <input type="number" class="card-quantity" placeholder="Количество" min="1" required value="30">
+                    </div>
+                </div>
+                
+                <button id="add-card-btn">Добавить номинал</button>
+                <button id="remove-card-btn">Удалить последний номинал</button>
+            </div>
+            <div id="balance_start" class="card-inputs"> 
+                <div class="card-input">
+                    <input type="number" class="card-value" placeholder="Начальные деньги">
+                </div>
+            </div>
+            <div id="players-setup" class="hidden">
+                <h3>Игроки</h3>
+                <p>Введите количество игроков:</p>
+                <input type="number" id="player-count" min="2" max="10" value="4">
+                
+                <div id="player-names-container">
+                    <!-- Здесь будут добавляться поля для имен игроков -->
+                </div>
+                
+                <button id="start-game-btn">Начать игру</button>
+            </div>
+        </div>
+        
+        <!-- Игровое поле -->
+        <div id="game-section" class="section hidden">
+            <h2>Игра в процессе</h2>
+            
+            <div class="player-cards" id="players-display">
+                <!-- Здесь будут отображаться карточки игроков -->
+            </div>
+            
+            <div class="action-buttons">
+                <button id="roll-dice-btn">Бросить кубик</button>
+                <button id="end-turn-btn" disabled>Завершить ход</button>
+                <button id="transfer-money-btn">Передать деньги</button>
+            </div>
+            
+            <div id="dice-result" class="dice-result hidden"></div>
+            
+            <div class="log" id="game-log">
+                <h3>Журнал игры</h3>
+                <div id="log-entries"></div>
+            </div>
+            
+            <div class="bottom-actions">
+                <button id="reset-game-btn" class="btn-reset">Завершить игру и начать заново</button>
+            </div>
+        </div>
 
-        <li>❌Запрещено рекламировать бота любыми способами без одобрения администрации</li>
+        <!-- Модальное окно для передачи денег -->
+        <div id="transfer-modal" class="modal hidden">
+            <h3>Передача денег</h3>
+            
+            <div>
+                <label for="transfer-from">От кого:</label>
+                <select id="transfer-from"></select>
+            </div>
+            
+            <div>
+                <label for="transfer-to">Кому:</label>
+                <select id="transfer-to"></select>
+            </div>
+            
+            <div>
+                <label for="transfer-amount">Сумма:</label>
+                <input type="number" id="transfer-amount" min="1" value="100">
+            </div>
+            
+            <div class="modal-buttons">
+                <button id="confirm-transfer-btn">Подтвердить</button>
+                <button id="cancel-transfer-btn">Отмена</button>
+            </div>
+        </div>
+        
+        <!-- Затемнение фона для модального окна -->
+        <div id="modal-overlay" class="modal-overlay hidden"></div>
+    </div>
 
-        <li>❗Бот и администрация не несут ответственности за взаимоотношения пользователей бота, а так же за налоговые и финансовые вопросы.</li>
-
-        <li>✅Администрация и модерация имеет право удалять, изменять балансы и объявления, выдавать предупреждения и баны на аккаунты и так далее.</li>
-
-        <li>✅Пользователь обязуется соблюдать действующее законодательство 🇷🇺Российской Федерации.</li>
-      <li>❌Запрещено использование уязвимости/недоработки бота в своих личных целях, для извлечения прибыли, за это нарушение применяется долгосрочная блокировка и штраф, размер которого определяет администрация</li>
-
-      </ul>
-    </section>
-    
-    <section class="punishments">
-      <h2>Наказания</h2>
-      <foolter>
-      <ul>
-        <li><b>Уровень 1: предупреждение⚠️</b><br/>   Письменное сообщение высылается пользователю за незначительные нарушения, при первом предупреждении, RT не снимаюся. <br/>Если предупреждений более трёх - при последующих нарушениях действует второй пункт</li>
-        <li><b>Уровень 2: долгосрочная блокировка ⛔</b><br/>временное ограничение доступа к функциям бота, срок определяется администрацией, более двух долгосрочных блокировок - действует третий пункт</li>
-        <li><b>Уровень 3 вечная блокировка❌⛔❌</b><br/>применяется при значительном нарушении правил бота, нарушении законодательства 🇷🇺Российской Федерации или при наличии более двух долгосрочных блокировок</li>
-        <li><br/>При попытки обхода блокировки, будет применён бан по IP и бан в других ботах разработчика</li>
-        <li><br/><br/><b>За нарушениями следят администрация, модерация и система [S/🛡️protect system v1]</b></li>
-      </ul>
-    </foolter>
-    </section>
-  </main>
-  <footer>
-    <h2>Бот: @Sbot_rusbot</h2>
-    <h3>Поддержка 24/7: @zaschebot</h3>
-  </footer>
+    <script>
+        // Глобальные переменные игры
+        let gameState = {
+            cards: [],
+            players: [],
+            bank: {
+                name: "КАЗНА",
+                balance: 0,
+                cards: []
+            },
+            currentPlayerIndex: 0,
+            gameStarted: false,
+            diceRolled: false,
+            logEntries: []
+        };
+        
+        // Ключ для localStorage
+        const STORAGE_KEY = 'monopoly_game_state_v2';
+        
+        // DOM элементы
+        const setupSection = document.getElementById('setup-section');
+        const gameSection = document.getElementById('game-section');
+        const cardInputsContainer = document.getElementById('card-inputs-container');
+        const addCardBtn = document.getElementById('add-card-btn');
+        const removeCardBtn = document.getElementById('remove-card-btn');
+        const playersSetup = document.getElementById('players-setup');
+        const playerCountInput = document.getElementById('player-count');
+        const playerNamesContainer = document.getElementById('player-names-container');
+        const startGameBtn = document.getElementById('start-game-btn');
+        const playersDisplay = document.getElementById('players-display');
+        const rollDiceBtn = document.getElementById('roll-dice-btn');
+        const endTurnBtn = document.getElementById('end-turn-btn');
+        const transferMoneyBtn = document.getElementById('transfer-money-btn');
+        const resetGameBtn = document.getElementById('reset-game-btn');
+        const diceResult = document.getElementById('dice-result');
+        const logEntries = document.getElementById('log-entries');
+        const transferModal = document.getElementById('transfer-modal');
+        const modalOverlay = document.getElementById('modal-overlay');
+        const transferFromSelect = document.getElementById('transfer-from');
+        const transferToSelect = document.getElementById('transfer-to');
+        const transferAmountInput = document.getElementById('transfer-amount');
+        const confirmTransferBtn = document.getElementById('confirm-transfer-btn');
+        const cancelTransferBtn = document.getElementById('cancel-transfer-btn');
+        
+        // Инициализация игры
+        function init() {
+            // Пытаемся загрузить сохраненную игру
+            loadGame();
+            
+            // Слушатели событий
+            addCardBtn.addEventListener('click', addCardInput);
+            removeCardBtn.addEventListener('click', removeCardInput);
+            playerCountInput.addEventListener('change', setupPlayerNames);
+            startGameBtn.addEventListener('click', startGame);
+            rollDiceBtn.addEventListener('click', rollDice);
+            endTurnBtn.addEventListener('click', endTurn);
+            transferMoneyBtn.addEventListener('click', showTransferModal);
+            resetGameBtn.addEventListener('click', resetGame);
+            confirmTransferBtn.addEventListener('click', transferMoney);
+            cancelTransferBtn.addEventListener('click', hideTransferModal);
+            
+            // Инициализируем имена игроков
+            setupPlayerNames();
+        }
+        
+        // Функция для покупки города (увеличение количества карт)
+        function buyProperty(playerIndex) {
+            gameState.players[playerIndex].cards.push("Город"); // Добавляем карту
+            updatePlayersDisplay();
+            addLogEntry(`${gameState.players[playerIndex].name} купил город. Теперь у него ${gameState.players[playerIndex].cards.length} карт`);
+        }
+        
+        // Функция для продажи города (уменьшение количества карт)
+        function sellProperty(playerIndex) {
+            if (gameState.players[playerIndex].cards.length > 0) {
+                gameState.players[playerIndex].cards.pop(); // Удаляем карту
+                updatePlayersDisplay();
+                addLogEntry(`${gameState.players[playerIndex].name} продал город. Теперь у него ${gameState.players[playerIndex].cards.length} карт`);
+            } else {
+                alert('У игрока нет городов для продажи!');
+            }
+        }
+        
+        // Обработчик кликов для кнопок покупки/продажи
+        function handlePropertyButtonClick(event) {
+            if (event.target.id === 'buy-property-btn') {
+                const playerCard = event.target.closest('.player-card');
+                const playerIndex = Array.from(playersDisplay.querySelectorAll('.player-card')).indexOf(playerCard) - 1; // -1 потому что первый элемент - банк
+                if (playerIndex >= 0 && playerIndex < gameState.players.length) {
+                    buyProperty(playerIndex);
+                }
+            } else if (event.target.id === 'sell-property-btn') {
+                const playerCard = event.target.closest('.player-card');
+                const playerIndex = Array.from(playersDisplay.querySelectorAll('.player-card')).indexOf(playerCard) - 1;
+                if (playerIndex >= 0 && playerIndex < gameState.players.length) {
+                    sellProperty(playerIndex);
+                }
+            }
+        }
+        
+        // Сохранить состояние игры
+        function saveGame() {
+            const stateToSave = {
+                ...gameState,
+                // Не сохраняем временные флаги
+                gameStarted: true,
+                diceRolled: false
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
+        }
+        
+        // Загрузить сохраненную игру
+        function loadGame() {
+            const savedState = localStorage.getItem(STORAGE_KEY);
+            if (savedState) {
+                try {
+                    const parsedState = JSON.parse(savedState);
+                    
+                    // Если есть сохраненная игра, показываем игровое поле
+                    if (parsedState.gameStarted && parsedState.players.length > 0) {
+                        gameState = parsedState;
+                        
+                        // Восстанавливаем лог
+                        gameState.logEntries.forEach(entry => {
+                            addLogEntry(entry, false); // false - не сохранять снова в state
+                        });
+                        
+                        // Показываем игровое поле
+                        setupSection.classList.add('hidden');
+                        gameSection.classList.remove('hidden');
+                        
+                        // Обновляем отображение
+                        updatePlayersDisplay();
+                        
+                        // Обновляем кнопки
+                        rollDiceBtn.disabled = gameState.diceRolled;
+                        endTurnBtn.disabled = !gameState.diceRolled;
+                        
+                        return true;
+                    }
+                } catch (e) {
+                    console.error('Ошибка загрузки игры:', e);
+                }
+            }
+            return false;
+        }
+        
+        // Сбросить игру
+        function resetGame() {
+            if (confirm('Вы уверены, что хотите завершить текущую игру и начать заново? Все текущие данные будут потеряны.')) {
+                // Очищаем сохраненную игру
+                localStorage.removeItem(STORAGE_KEY);
+                
+                // Сбрасываем состояние
+                gameState = {
+                    cards: [],
+                    players: [],
+                    bank: {
+                        name: "КАЗНА",
+                        balance: 0,
+                        cards: []
+                    },
+                    currentPlayerIndex: 0,
+                    gameStarted: false,
+                    diceRolled: false,
+                    logEntries: []
+                };
+                
+                // Очищаем лог
+                logEntries.innerHTML = '';
+                
+                // Показываем экран настройки
+                gameSection.classList.add('hidden');
+                setupSection.classList.remove('hidden');
+                
+                // Сбрасываем поля ввода
+                setupInitialCards();
+                setupPlayerNames();
+            }
+        }
+        
+        // Установка начальных карт
+        function setupInitialCards() {
+            // Уже есть 3 карты по умолчанию в HTML
+            updateRemoveCardButton();
+        }
+        
+        // Добавление полей для нового номинала карт
+        function addCardInput() {
+            const cardCount = cardInputsContainer.children.length;
+            
+            if (cardCount >= 20) {
+                alert('Максимальное количество разных номиналов - 20');
+                return;
+            }
+            
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card-input';
+            
+            cardDiv.innerHTML = `
+                <input type="number" class="card-value" placeholder="Номинал" min="1" required>
+                <input type="number" class="card-quantity" placeholder="Количество" min="1" required>
+            `;
+            
+            cardInputsContainer.appendChild(cardDiv);
+            
+            // Прокручиваем к новому полю
+            cardDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            updateRemoveCardButton();
+        }
+        
+        // Удаление последнего набора полей для карт
+        function removeCardInput() {
+            const cardCount = cardInputsContainer.children.length;
+            
+            if (cardCount > 1) {
+                cardInputsContainer.removeChild(cardInputsContainer.lastElementChild);
+            }
+            
+            updateRemoveCardButton();
+        }
+        
+        // Обновление состояния кнопки удаления карты
+        function updateRemoveCardButton() {
+            const cardCount = cardInputsContainer.children.length;
+            removeCardBtn.disabled = cardCount <= 1;
+        }
+        
+        // Настройка полей для имен игроков
+        function setupPlayerNames() {
+            const playerCount = parseInt(playerCountInput.value) || 2;
+            playerNamesContainer.innerHTML = '';
+            
+            for (let i = 1; i <= playerCount; i++) {
+                const div = document.createElement('div');
+                div.innerHTML = `<input type="text" class="player-name" placeholder="Имя игрока ${i}" required value="Игрок ${i}">`;
+                playerNamesContainer.appendChild(div);
+            }
+            
+            // Показываем секцию с игроками
+            playersSetup.classList.remove('hidden');
+        }
+        
+        // Начало игры
+        function startGame() {
+            // Собираем данные о картах
+            gameState.cards = [];
+            const cardInputs = cardInputsContainer.querySelectorAll('.card-input');
+            
+            let valid = true;
+            
+            cardInputs.forEach(input => {
+                const valueInput = input.querySelector('.card-value');
+                const quantityInput = input.querySelector('.card-quantity');
+                
+                const value = parseInt(valueInput.value);
+                const quantity = parseInt(quantityInput.value);
+                
+                if (isNaN(value) || isNaN(quantity) || value <= 0 || quantity <= 0) {
+                    valid = false;
+                    valueInput.style.border = '1px solid red';
+                    quantityInput.style.border = '1px solid red';
+                } else {
+                    valueInput.style.border = '';
+                    quantityInput.style.border = '';
+                    gameState.cards.push({ value, quantity });
+                }
+            });
+            
+            if (!valid) {
+                alert('Пожалуйста, заполните все поля для карт корректными значениями (положительные числа)');
+                return;
+            }
+            
+            // Собираем имена игроков
+            const nameInputs = document.querySelectorAll('.player-name');
+            const playerNames = Array.from(nameInputs).map(input => {
+                const name = input.value.trim();
+                if (name === '') {
+                    input.style.border = '1px solid red';
+                    valid = false;
+                    return '';
+                } else {
+                    input.style.border = '';
+                    return name;
+                }
+            });
+            
+            if (!valid) {
+                alert('Пожалуйста, введите имена всех игроков');
+                return;
+            }
+            
+            if (playerNames.length < 2) {
+                alert('Должно быть как минимум 2 игрока');
+                return;
+            }
+            
+            // Создаем игроков
+            gameState.players = playerNames.map(name => ({
+                name,
+                balance: parseInt(document.querySelector('#balance_start .card-value').value) || 1500, // Стартовый баланс как в классической монополии
+                cards: []
+            }));
+            
+            // Инициализируем казну
+            gameState.bank.balance = 0;
+            gameState.bank.cards = [];
+            
+            // Вычисляем общее количество денег
+            let totalMoney = 0;
+            gameState.cards.forEach(card => {
+                totalMoney += card.value * card.quantity;
+            });
+            
+            // Устанавливаем баланс казны
+            gameState.bank.balance = totalMoney;
+            
+            // Вычитаем стартовые капиталы игроков из казны
+            gameState.players.forEach(player => {
+                gameState.bank.balance -= player.balance;
+            });
+            
+            // Переключаемся на игровое поле
+            setupSection.classList.add('hidden');
+            gameSection.classList.remove('hidden');
+            
+            // Обновляем отображение игроков
+            updatePlayersDisplay();
+            
+            // Добавляем запись в лог
+            addLogEntry(`Игра началась с ${gameState.players.length} игроками!`);
+            addLogEntry(`Стартовый капитал казны: ${gameState.bank.balance}₽`);
+            
+            gameState.gameStarted = true;
+            gameState.diceRolled = false;
+            gameState.currentPlayerIndex = 0;
+            gameState.logEntries = [];
+            
+            // Обновляем кнопки
+            rollDiceBtn.disabled = false;
+            endTurnBtn.disabled = true;
+            
+            // Сохраняем игру
+            saveGame();
+        }
+        
+        // Обновление отображения игроков
+        function updatePlayersDisplay() {
+            playersDisplay.innerHTML = '';
+            
+            // Сначала отображаем казну
+            const bankCard = document.createElement('div');
+            bankCard.className = 'player-card bank';
+            
+            bankCard.innerHTML = `
+                <div class="player-info">
+                    <div class="player-name bank">${gameState.bank.name}</div>
+                    <div class="player-balance">Баланс: ${gameState.bank.balance}₽</div>
+                </div>
+            `;
+            
+            playersDisplay.appendChild(bankCard);
+            
+            // Затем отображаем игроков
+            gameState.players.forEach((player, index) => {
+                const playerCard = document.createElement('div');
+                playerCard.className = `player-card ${index === gameState.currentPlayerIndex ? 'active' : 'inactive'}`;
+                
+                playerCard.innerHTML = `
+                    <div class="player-info">
+                        <div class="player-name">${player.name}</div>
+                        <div class="player-balance">Баланс: ${player.balance}₽</div>
+                        <div class="player-cards-count">Городов: ${player.cards.length}</div>
+                        <button id="buy-property-btn" class="btn-property">Купить город</button>
+                        <button id="sell-property-btn" class="btn-property">Продать город</button>
+                    </div>
+                `;
+                
+                playersDisplay.appendChild(playerCard);
+            });
+            
+            // Добавляем обработчики событий для кнопок покупки/продажи
+            playersDisplay.addEventListener('click', handlePropertyButtonClick);
+            
+            // Сохраняем игру после изменений
+            saveGame();
+        }
+        
+        // Бросок кубика
+        function rollDice() {
+            if (gameState.diceRolled) {
+                alert('Вы уже бросали кубик в этом ходу');
+                return;
+            }
+            
+            const diceRoll = Math.floor(Math.random() * 6) + 1;
+            diceResult.textContent = `Выпало: ${diceRoll}`;
+            diceResult.classList.remove('hidden');
+            
+            // Добавляем запись в лог
+            addLogEntry(`${gameState.players[gameState.currentPlayerIndex].name} выбросил ${diceRoll}`);
+            
+            gameState.diceRolled = true;
+            rollDiceBtn.disabled = true;
+            endTurnBtn.disabled = false;
+            
+            // Сохраняем игру
+            saveGame();
+        }
+        
+        // Завершение хода
+        function endTurn() {
+            if (!gameState.diceRolled) {
+                alert('Сначала бросьте кубик');
+                return;
+            }
+            
+            // Переход к следующему игроку
+            gameState.currentPlayerIndex = (gameState.currentPlayerIndex + 1) % gameState.players.length;
+            gameState.diceRolled = false;
+            
+            // Обновляем отображение
+            updatePlayersDisplay();
+            diceResult.classList.add('hidden');
+            
+            // Обновляем кнопки
+            rollDiceBtn.disabled = false;
+            endTurnBtn.disabled = true;
+            
+            // Добавляем запись в лог
+            addLogEntry(`Ход переходит к игроку ${gameState.players[gameState.currentPlayerIndex].name}`);
+            
+            // Сохраняем игру
+            saveGame();
+        }
+        
+        // Показать модальное окно передачи денег
+        function showTransferModal() {
+            // Заполняем выпадающие списки
+            transferFromSelect.innerHTML = '';
+            transferToSelect.innerHTML = '';
+            
+            // Добавляем казну и игроков в список "От кого"
+            const bankOptionFrom = document.createElement('option');
+            bankOptionFrom.value = 'bank';
+            bankOptionFrom.textContent = gameState.bank.name;
+            transferFromSelect.appendChild(bankOptionFrom);
+            
+            gameState.players.forEach((player, index) => {
+                const optionFrom = document.createElement('option');
+                optionFrom.value = index;
+                optionFrom.textContent = player.name;
+                transferFromSelect.appendChild(optionFrom);
+            });
+            
+            // Добавляем казну и игроков в список "Кому"
+            const bankOptionTo = document.createElement('option');
+            bankOptionTo.value = 'bank';
+            bankOptionTo.textContent = gameState.bank.name;
+            transferToSelect.appendChild(bankOptionTo);
+            
+            gameState.players.forEach((player, index) => {
+                const optionTo = document.createElement('option');
+                optionTo.value = index;
+                optionTo.textContent = player.name;
+                transferToSelect.appendChild(optionTo);
+            });
+            
+            // Устанавливаем текущего игрока по умолчанию
+            transferFromSelect.value = gameState.currentPlayerIndex;
+            
+            // Показываем модальное окно
+            transferModal.classList.remove('hidden');
+            modalOverlay.classList.remove('hidden');
+        }
+        
+        // Скрыть модальное окно передачи денег
+        function hideTransferModal() {
+            transferModal.classList.add('hidden');
+            modalOverlay.classList.add('hidden');
+        }
+        
+        // Передача денег между игроками и казной
+        function transferMoney() {
+            const fromValue = transferFromSelect.value;
+            const toValue = transferToSelect.value;
+            const amount = parseInt(transferAmountInput.value);
+            
+            if (fromValue === toValue) {
+                alert('Нельзя передавать деньги самому себе');
+                return;
+            }
+            
+            if (isNaN(amount) || amount <= 0) {
+                alert('Введите корректную сумму (положительное число)');
+                return;
+            }
+            
+            let fromEntity, toEntity, fromName, toName;
+            
+            // Определяем отправителя
+            if (fromValue === 'bank') {
+                fromEntity = gameState.bank;
+                fromName = gameState.bank.name;
+            } else {
+                fromEntity = gameState.players[parseInt(fromValue)];
+                fromName = fromEntity.name;
+            }
+            
+            // Определяем получателя
+            if (toValue === 'bank') {
+                toEntity = gameState.bank;
+                toName = gameState.bank.name;
+            } else {
+                toEntity = gameState.players[parseInt(toValue)];
+                toName = toEntity.name;
+            }
+            
+            if (fromEntity.balance < amount) {
+                alert(`У ${fromName} недостаточно средств`);
+                return;
+            }
+            
+            // Выполняем перевод
+            fromEntity.balance -= amount;
+            toEntity.balance += amount;
+            
+            // Обновляем отображение
+            updatePlayersDisplay();
+            
+            // Скрываем модальное окно
+            hideTransferModal();
+            
+            // Добавляем запись в лог
+            addLogEntry(`${fromName} передал ${amount}₽ ${toName}`);
+        }
+        
+        // Добавление записи в лог
+        function addLogEntry(message, saveToState = true) {
+            const entryText = `[${new Date().toLocaleTimeString()}] ${message}`;
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = entryText;
+            logEntries.appendChild(entry);
+            
+            if (saveToState) {
+                gameState.logEntries.push(entryText);
+                saveGame();
+            }
+            
+            // Прокручиваем лог вниз
+            logEntries.scrollTop = logEntries.scrollHeight;
+        }
+        
+        // Запуск игры при загрузке страницы
+        window.onload = init;
+    </script>
 </body>
 </html>
